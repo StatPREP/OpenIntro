@@ -31,9 +31,11 @@ Your textbook refers to several data sets in chapter 1. Let's find out how to lo
 
 
 We can have R pull in our data from a website. This means we don't have to spend a lot of time trying to type in hundreds of numbers! The box you see below contains the instructions for R to find the `email50` data from the web and put it into an R data set called "Email_50". (These instructions are called "R code")
+The second line tells R to display the new R data set we created.
 
 ```{r get-data, exercise=TRUE}
-Email_50 <- ??????????????????
+Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
+Email_50
 
 ```
 

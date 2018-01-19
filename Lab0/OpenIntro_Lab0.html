@@ -63,9 +63,10 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>Your textbook refers to several data sets in chapter 1. Let’s find out how to look at these data sets.</p>
 <div id="section-finding-the-data" class="section level3">
 <h3>Finding the data</h3>
-<p>We can have R pull in our data from a website. This means we don’t have to spend a lot of time trying to type in hundreds of numbers! The box you see below contains the instructions for R to find the <code>email50</code> data from the web and put it into an R data set called “Email_50”. (These instructions are called “R code”)</p>
+<p>We can have R pull in our data from a website. This means we don’t have to spend a lot of time trying to type in hundreds of numbers! The box you see below contains the instructions for R to find the <code>email50</code> data from the web and put it into an R data set called “Email_50”. (These instructions are called “R code”) The second line tells R to display the new R data set we created.</p>
 <div class="tutorial-exercise" data-label="get-data" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
-<pre class="text"><code>Email_50 &lt;- ??????????????????</code></pre>
+<pre class="text"><code>Email_50 &lt;- read.csv(&quot;https://nicolelang.github.io/Math1130/email50.csv&quot;)
+Email_50</code></pre>
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
 </div>
 </div>
@@ -110,27 +111,27 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <tr>
 <td>
 
-<div id="htmlwidget-75cb7c5db1fbfd608661" style="width:100%;height:auto;", class = "quiz html-widget">
+<div id="htmlwidget-d9b0c91c283dd4420cd4" style="width:100%;height:auto;", class = "quiz html-widget">
 <div class="panel panel-default">
 <div class="panel-body quizArea">
 </div>
 </div>
 </div>
 
-<script type="application/json" data-for="htmlwidget-75cb7c5db1fbfd608661">{"x":{"question":"Which package contains functions for installing other R packages?","answers":[{"option":"base","correct":false,"message":null},{"option":"tools","correct":false,"message":null},{"option":"utils","correct":true,"message":null},{"option":"codetools","correct":false,"message":null}],"label":"quiz-1","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"Which package contains functions for installing other R packages?","a":[{"option":"base","correct":false,"message":null},{"option":"tools","correct":false,"message":null},{"option":"utils","correct":true,"message":null},{"option":"codetools","correct":false,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-d9b0c91c283dd4420cd4">{"x":{"question":"Which package contains functions for installing other R packages?","answers":[{"option":"base","correct":false,"message":null},{"option":"tools","correct":false,"message":null},{"option":"utils","correct":true,"message":null},{"option":"codetools","correct":false,"message":null}],"label":"quiz-1","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"Which package contains functions for installing other R packages?","a":[{"option":"base","correct":false,"message":null},{"option":"tools","correct":false,"message":null},{"option":"utils","correct":true,"message":null},{"option":"codetools","correct":false,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
 </td>
 </tr>
 <tr>
 <td>
 
-<div id="htmlwidget-bde11acb23682a029e17" style="width:100%;height:auto;", class = "quiz html-widget">
+<div id="htmlwidget-7805be3ec7f54aa31f34" style="width:100%;height:auto;", class = "quiz html-widget">
 <div class="panel panel-default">
 <div class="panel-body quizArea">
 </div>
 </div>
 </div>
 
-<script type="application/json" data-for="htmlwidget-bde11acb23682a029e17">{"x":{"question":"Which of the R packages listed below are used to create plots?","answers":[{"option":"lattice","correct":true,"message":null},{"option":"tools","correct":false,"message":null},{"option":"stats","correct":false,"message":null},{"option":"grid","correct":true,"message":null}],"label":"quiz-2","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"Which of the R packages listed below are used to create plots?","a":[{"option":"lattice","correct":true,"message":null},{"option":"tools","correct":false,"message":null},{"option":"stats","correct":false,"message":null},{"option":"grid","correct":true,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-7805be3ec7f54aa31f34">{"x":{"question":"Which of the R packages listed below are used to create plots?","answers":[{"option":"lattice","correct":true,"message":null},{"option":"tools","correct":false,"message":null},{"option":"stats","correct":false,"message":null},{"option":"grid","correct":true,"message":null}],"label":"quiz-2","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"Which of the R packages listed below are used to create plots?","a":[{"option":"lattice","correct":true,"message":null},{"option":"tools","correct":false,"message":null},{"option":"stats","correct":false,"message":null},{"option":"grid","correct":true,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
 </td>
 </tr>
 </table>
