@@ -32,11 +32,84 @@ Your textbook refers to several data sets in chapter 1. Let's find out how to lo
 
 We can have R pull in our data from a website. This means we don't have to spend a lot of time trying to type in hundreds of numbers! The box you see below contains the instructions for R to find the `email50` data from the web and put it into an R data set called "Email_50". (These instructions are called "R code")
 The second line tells R to display the new R data set we created.
+Click "Run Code" to see what happens!
 
 ```{r get-data, exercise=TRUE}
 Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
 Email_50
 
+```
+
+Do you notice a triangular arrow in the upper right corner of the data table? What do you think that means? What about the information in the bottom row of the data display?
+
+You can click on the triangle or the page numbers ("Previous" and "Next") to see what happens.
+
+If you want to go back to the first version of the display, click "Start Over" in the upper left corner of the Code box, then click "Run Code" again.
+
+```{r quiz1}
+quiz(
+  question("How many columns does the `Email_50` data set have?",
+    answer("5"),
+    answer("21", correct = TRUE),
+    answer("50"),
+    answer("columns?")
+  ),
+  question("How many rows does the `Email_50` data set have?",
+    answer("5"),
+    answer("21"),
+    answer("50", correct = TRUE),
+    answer("rows?")
+),
+  question("Each of the columns in the data table represents a(n)...",
+           answer("observation"),
+           answer("experiment"),
+           answer("email message"),
+           answer("variable", correct=TRUE)
+  ),
+question("Each of the rows in the data table represents a(n)...",
+         answer("observation", correct=TRUE),
+         answer("experiment"),
+         answer("person"),
+         answer("variable"))
+)
+```
+
+
+## Narrowing it down
+
+Many data sets come with more information than we can comfortably view on one screen. For now, we want to work with only one or two variables at a time.
+
+This is how we tell R that we just want to look at the values for the `num_char` variable, which tells us the number of characters in each email message. 
+Note: the values of this variable represent *thousands* of characters. So a value of 2.1 really means there were 2,100 characters in the email.
+
+```{r reloading data} 
+Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
+```
+
+```{r restrict-to-num-char, exercise=TRUE}
+Email_50$num_char
+```
+
+Do you like the way `num_char` displayed?
+What if we want to have a nice tabular display like we did before, except with fewer columns? Let's see if we can look at both `num_char` and `line_breaks` (the data used on p.27 of your textbook).
+
+```{r new-table, exercise=TRUE}
+subset(Email_50, select=c("num_char","line_breaks"))
+```
+
+Since we've already seen a scatterplot of `line_breaks` vs. `num_char`, let's look at something a bit different.
+
+How do the number of characters in an email relate to the number of exclamation points in the message part of the email?
+
+Here are the names of the columns in the `Email_50` data.
+```{r column-names}
+names(Email_50)
+```
+
+Let's create the new data table. Replace `..varable..` with the appropriate variable name for the number of exclamation points ("exclaim") in the message.
+
+```{r exlaim-table, exercise=TRUE}
+subset(Email_50, select=c("num_char","..variable.."))
 ```
 
 ### Exercise with Code
