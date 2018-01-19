@@ -48,11 +48,24 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h2>Labs?!? Do I need a white coat?</h2>
 <p>We usually think of a lab as a place where scientists (or science students) perform experiments. For students, the lab is a hands-on application of what is learned during the lecture part of their science course and a place where they can learn to use the tools used by scientists.</p>
 <p>In these labs, you’ll be exploring and experimenting with the material learned in your textbook and/or classroom, and you’ll also learn a bit about the tools used by statisticians. No, you don’t need a white coat. You just need a browser, your notebook, and a pen or pencil.</p>
-<div id="section-exercise" class="section level3">
-<h3>Exercise</h3>
-<p><em>Here’s a simple exercise with an empty code chunk provided for entering the answer.</em></p>
-<p>Write the R code required to add two plus two:</p>
-<div class="tutorial-exercise" data-label="two-plus-two" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+</div>
+<div id="section-how-is-this-going-to-happen" class="section level2">
+<h2>How is this going to happen?</h2>
+<p>This web site is connected (behind the scenes) to a server running software called R. (Yes, it’s a single letter.) R can be used to do some pretty heavy-duty statistics stuff. The R software is free, and you can find a link to download both R and RStudio (an interface for using R) at <a href="https://www.openintro.org/stat/labs.php" class="uri">https://www.openintro.org/stat/labs.php</a>.</p>
+</div>
+<div id="section-why-arent-we-using-r-and-rstudio-directly" class="section level2">
+<h2>Why aren’t we using R and RStudio directly?</h2>
+<p>There are many reasons! One of them is that some of your classmates might not have their own computers, and students are not allowed to install software on NHCC’s computers. Another is that R isn’t a “point at the icon and click” kind of program. This web site can help with both of those reasons!</p>
+<p>Are you ready? Let’s explore!</p>
+</div>
+<div id="section-step-1-looking-at-data" class="section level2">
+<h2>Step 1: Looking at data</h2>
+<p>Your textbook refers to several data sets in chapter 1. Let’s find out how to look at these data sets.</p>
+<div id="section-finding-the-data" class="section level3">
+<h3>Finding the data</h3>
+<p>We can have R pull in our data from a website. This means we don’t have to spend a lot of time trying to type in hundreds of numbers! The box you see below contains the instructions for R to find the <code>email50</code> data from the web and put it into an R data set called “Email_50”. (These instructions are called “R code”)</p>
+<div class="tutorial-exercise" data-label="get-data" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>Email_50 &lt;- ??????????????????</code></pre>
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
 </div>
 </div>
@@ -97,27 +110,27 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <tr>
 <td>
 
-<div id="htmlwidget-f899b0d83dcc3c43036e" style="width:100%;height:auto;", class = "quiz html-widget">
+<div id="htmlwidget-75cb7c5db1fbfd608661" style="width:100%;height:auto;", class = "quiz html-widget">
 <div class="panel panel-default">
 <div class="panel-body quizArea">
 </div>
 </div>
 </div>
 
-<script type="application/json" data-for="htmlwidget-f899b0d83dcc3c43036e">{"x":{"question":"Which package contains functions for installing other R packages?","answers":[{"option":"base","correct":false,"message":null},{"option":"tools","correct":false,"message":null},{"option":"utils","correct":true,"message":null},{"option":"codetools","correct":false,"message":null}],"label":"quiz-1","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"Which package contains functions for installing other R packages?","a":[{"option":"base","correct":false,"message":null},{"option":"tools","correct":false,"message":null},{"option":"utils","correct":true,"message":null},{"option":"codetools","correct":false,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-75cb7c5db1fbfd608661">{"x":{"question":"Which package contains functions for installing other R packages?","answers":[{"option":"base","correct":false,"message":null},{"option":"tools","correct":false,"message":null},{"option":"utils","correct":true,"message":null},{"option":"codetools","correct":false,"message":null}],"label":"quiz-1","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"Which package contains functions for installing other R packages?","a":[{"option":"base","correct":false,"message":null},{"option":"tools","correct":false,"message":null},{"option":"utils","correct":true,"message":null},{"option":"codetools","correct":false,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
 </td>
 </tr>
 <tr>
 <td>
 
-<div id="htmlwidget-d37ac562afb0e8a89307" style="width:100%;height:auto;", class = "quiz html-widget">
+<div id="htmlwidget-bde11acb23682a029e17" style="width:100%;height:auto;", class = "quiz html-widget">
 <div class="panel panel-default">
 <div class="panel-body quizArea">
 </div>
 </div>
 </div>
 
-<script type="application/json" data-for="htmlwidget-d37ac562afb0e8a89307">{"x":{"question":"Which of the R packages listed below are used to create plots?","answers":[{"option":"lattice","correct":true,"message":null},{"option":"tools","correct":false,"message":null},{"option":"stats","correct":false,"message":null},{"option":"grid","correct":true,"message":null}],"label":"quiz-2","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"Which of the R packages listed below are used to create plots?","a":[{"option":"lattice","correct":true,"message":null},{"option":"tools","correct":false,"message":null},{"option":"stats","correct":false,"message":null},{"option":"grid","correct":true,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-bde11acb23682a029e17">{"x":{"question":"Which of the R packages listed below are used to create plots?","answers":[{"option":"lattice","correct":true,"message":null},{"option":"tools","correct":false,"message":null},{"option":"stats","correct":false,"message":null},{"option":"grid","correct":true,"message":null}],"label":"quiz-2","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"Which of the R packages listed below are used to create plots?","a":[{"option":"lattice","correct":true,"message":null},{"option":"tools","correct":false,"message":null},{"option":"stats","correct":false,"message":null},{"option":"grid","correct":true,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
 </td>
 </tr>
 </table>
@@ -133,9 +146,9 @@ learnr:::register_http_handlers(session, metadata = NULL)
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-`tutorial-exercise-two-plus-two-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-two-plus-two-code-editor`)), session)
-output$`tutorial-exercise-two-plus-two-output` <- renderUI({
-  `tutorial-exercise-two-plus-two-result`()
+`tutorial-exercise-get-data-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-get-data-code-editor`)), session)
+output$`tutorial-exercise-get-data-output` <- renderUI({
+  `tutorial-exercise-get-data-result`()
 })
 </script>
  

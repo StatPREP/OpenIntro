@@ -15,13 +15,25 @@ We usually think of a lab as a place where scientists (or science students) perf
 
 In these labs, you'll be exploring and experimenting with the material learned in your textbook and/or classroom, and you'll also learn a bit about the tools used by statisticians. No, you don't need a white coat. You just need a browser, your notebook, and a pen or pencil.
 
-### Exercise 
+## How is this going to happen?
+This web site is connected (behind the scenes) to a server running software called R. (Yes, it's a single letter.) R can be used to do some pretty heavy-duty statistics stuff. The R software is free, and you can find a link to download both R and RStudio (an interface for using R) at <https://www.openintro.org/stat/labs.php>.
 
-*Here's a simple exercise with an empty code chunk provided for entering the answer.*
+## Why aren't we using R and RStudio directly?
+There are many reasons! One of them is that some of your classmates might not have their own computers, and students are not allowed to install software on NHCC's computers. Another is that R isn't a "point at the icon and click" kind of program. This web site can help with both of those reasons!
 
-Write the R code required to add two plus two:
+Are you ready? Let's explore!
 
-```{r two-plus-two, exercise=TRUE}
+
+## Step 1: Looking at data
+Your textbook refers to several data sets in chapter 1. Let's find out how to look at these data sets.
+
+### Finding the data 
+
+
+We can have R pull in our data from a website. This means we don't have to spend a lot of time trying to type in hundreds of numbers! The box you see below contains the instructions for R to find the `email50` data from the web and put it into an R data set called "Email_50". (These instructions are called "R code")
+
+```{r get-data, exercise=TRUE}
+Email_50 <- ??????????????????
 
 ```
 
