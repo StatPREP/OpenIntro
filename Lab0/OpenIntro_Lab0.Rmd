@@ -46,6 +46,7 @@ You can click on the triangle or the page numbers ("Previous" and "Next") to see
 
 If you want to go back to the first version of the display, click "Start Over" in the upper left corner of the Code box, then click "Run Code" again.
 
+### Quick Quiz 1
 ```{r quiz1}
 quiz(
   question("How many columns does the `Email_50` data set have?",
@@ -97,69 +98,78 @@ What if we want to have a nice tabular display like we did before, except with f
 subset(Email_50, select=c("num_char","line_breaks"))
 ```
 
+## Looking ahead: graphical displays of data
 Since we've already seen a scatterplot of `line_breaks` vs. `num_char`, let's look at something a bit different.
 
 How do the number of characters in an email relate to the number of exclamation points in the message part of the email?
 
 Here are the names of the columns in the `Email_50` data.
+```{r reloading2} 
+Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
+```
+
 ```{r column-names}
 names(Email_50)
 ```
 
-Let's create the new data table. Replace `..varable..` with the appropriate variable name for the number of exclamation points ("exclaim") in the message.
+Let's create the new data table. Replace `..variable..` in the R code below with the appropriate variable name for the number of exclamation points ("exclaim") in the *message*. Then click "Run Code."
+
 
 ```{r exlaim-table, exercise=TRUE}
 subset(Email_50, select=c("num_char","..variable.."))
 ```
 
-### Exercise with Code
+### Plotting...
+We want to see if the number of exclamation points might depend on the number of characters in the email. Generally, this means we want the number of exclamation points (the response variable) to be on the vertical or $y$-axis. We will put the number of characters (the explanatory variable) on the horizontal or $x$-axis.
 
-*Here's an exercise with some prepopulated code as well as `exercise.lines = 5` to provide a bit more initial room to work.*
+In the R code below, replace `..explanatory_var..` and `..response_var..` with the appropriate variable names from the `Email_50` data. Then click "Run Code."
 
-Now write a function that adds any two numbers and then call it:
+```{r plotting, exercise=TRUE}
+plot(x=Email_50$..explanatory_var.., y=Email_50$..response_var..)
 
-```{r add-function, exercise=TRUE, exercise.lines = 5}
-add <- function() {
-  
-}
 ```
 
-## Topic 2
+In the next lab, we will explore many different ways to look at data using graphs. We will also learn how to do some basic statistical calculations.
 
-### Exercise with Hint
 
-*Here's an exercise where the chunk is pre-evaulated via the `exercise.eval` option (so the user can see the default output we'd like them to customize). We also add a "hint" to the correct solution via the chunk immediate below labeled `print-limit-hint`.*
-
-Modify the following code to limit the number of rows printed to 5:
-
-```{r print-limit, exercise=TRUE, exercise.eval=TRUE}
-mtcars
-```
-
-```{r print-limit-hint}
-head(mtcars)
-```
-
-### Quiz
-
-*You can include any number of single or multiple choice questions as a quiz. Use the `question` function to define a question and the `quiz` function for grouping multiple questions together.*
-
-Some questions to verify that you understand the purposes of various base and recommended R packages:
-
-```{r quiz}
-quiz(
-  question("Which package contains functions for installing other R packages?",
-    answer("base"),
-    answer("tools"),
-    answer("utils", correct = TRUE),
-    answer("codetools")
-  ),
-  question("Which of the R packages listed below are used to create plots?",
-    answer("lattice", correct = TRUE),
-    answer("tools"),
-    answer("stats"),
-    answer("grid", correct = TRUE)
-  )
+### Quick Quiz 2
+```{r quiz2a}
+quiz( question("Looking at the plot of *Number of Exclamation Points vs Number of Characters*, which of the following are true? (check all that apply)",
+               answer("There is no association at all between these two variables."),
+               answer("There is a moderate association between these two variables.", correct=TRUE),
+               answer("There is a strong association between these two variables"),
+               answer("If there is any association, it is negative."),
+               answer("If there is any association, it is positive.", correct=TRUE),
+               answer("There are no clumps of points on the graph."),
+               answer("The points on the graph are mostly clumped together.", correct=TRUE)
+      )
 )
 ```
 
+#### Read this before answering the next question!
+In the first part of Chapter 1, we discussed associations between variables. You can use the code box above to re-create the *Number of Lines vs. Number of Characters* graph from p.27 of your textbook.
+
+You'll need to click "Start Over" in the upper left corner of the code box before you can create this plot.
+
+
+```{r quiz2b}
+quiz(
+  question("Were you able to recreate the graph? (choose the best answer)",
+    answer("Yes"),
+        answer("Yes, but some details are different", correct = TRUE),
+    answer("No.")
+  ),
+  question("Which of the following statements are true about the graph of *Number of Lines vs. Number of Characters*? (check all that apply)",
+           answer("There is no association at all between these two variables."),
+           answer("There is a moderate association between these two variables."),
+           answer("There is a strong association between these two variables.", correct=TRUE),
+           answer("If there is any association, it is negative."),  
+           answer("If there is any association, it is positive.", correct=TRUE),
+           answer("There are no clumps of points on the graph."),
+           answer("The points on the graph are mostly clumped together.", correct=TRUE)
+      )
+)
+```
+
+### Instructions for submitting the Lab
+I have no idea how this is going to work!
