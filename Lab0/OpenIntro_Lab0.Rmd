@@ -11,19 +11,21 @@ knitr::opts_chunk$set(echo = FALSE)
 Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
 library(checkr)
 tutorial_options(exercise.checker = checkr::check_for_learnr)
-library(submittr)
+# library(submittr)
 library(dplyr)
 library(ggformula)
 ```
 
-```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}
+<!--
+```{ child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}
 ```
- 
+ -->
 
 ## Labs?!? Do I need a white coat?
 We usually think of a lab as a place where scientists (or science students) perform experiments. For students, the lab is a hands-on application of what is learned during the lecture part of their science course and a place where they can learn to use the tools used by scientists. 
 
 In these labs, you'll be exploring and experimenting with the material learned in your textbook and/or classroom, and you'll also learn a bit about the tools used by statisticians. No, you don't need a white coat. You just need a browser, your notebook, and a pen or pencil.
+
 
 ## How is this going to happen?
 This web site is connected (behind the scenes) to a server running software called R. (Yes, it's a single letter.) R can be used to do some pretty heavy-duty statistics stuff. The R software is free, and you can find a link to download both R and RStudio (an interface for using R) at <https://www.openintro.org/stat/labs.php>.
@@ -51,9 +53,9 @@ Email_50
 
 Do you notice a triangular arrow in the upper right corner of the data table? What do you think that means? What about the information in the bottom row of the data display?
 
-You can click on the triangle or the page numbers ("Previous" and "Next") to see what happens.
+You can click on the triangle or the page numbers or "Previous" and "Next" to see what happens.
 
-If you want to go back to the first version of the display, click "Start Over" in the upper left corner of the Code box, then click "Run Code" again.
+If you want to go back to the first version of the display, click "Start Over" in the upper left corner of the R Code box, then click "Run Code" again.
 
 ### Quick Quiz 1
 ```{r quiz1}
@@ -89,35 +91,6 @@ question("Each of the rows in the data table represents a(n)...",
 
 Many data sets come with more information than we can comfortably view on one screen. For now, we want to work with only one or two variables at a time.
 
-This is how we tell R that we just want to look at the values for the `num_char` variable, which tells us the number of characters in each email message. 
-Note: the values of this variable represent *thousands* of characters. So a value of 2.1 really means there were 2,100 characters in the email.
-
-```{r reloading data} 
-# DTK: I'm not sure what this is intended to do. Do you want them to copy it into the code chunk?
-# Option, make this a -setup chunk for restrict-to-num-char
-# Easier, put it in the setup chunk at the top of the document. 
-# That's what I did, which means you don't need this chunk at all.
-Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
-```
-
-```{r restrict-to-num-char, exercise=TRUE}
-Email_50$num_char
-```
-
-Do you like the way `num_char` displayed?
-What if we want to have a nice tabular display like we did before, except with fewer columns? Let's see if we can look at both `num_char` and `line_breaks` (the data used on p.27 of your textbook).
-
-```{r new-table, exercise=TRUE}
-subset(Email_50, select=c("num_char","line_breaks"))
-```
-
-## Narrowing it down (DTK Style)
-
-
-NOTE to NICOLE: What I'm doing here is to use R functions that handle variable names concisely, without the need to use dollar signs or quotation marks. 
-
-Many data sets come with more information than we can comfortably view on one screen. For now, we want to work with only one or two variables at a time.
-
 This is how we tell R that we want just the `num_char` variable from the `Email_50` dataframe. (Press "Run" to execute the command.) `num_char`  tells us the number of characters in each email message. 
 Note: the values of this variable represent *thousands* of characters. So a value of 2.1 really means there were 2,100 characters in the email.
 
@@ -126,13 +99,13 @@ Note: the values of this variable represent *thousands* of characters. So a valu
 select(Email_50, num_char)
 ```
 
-Similarly, you can select two variables. For instance, here is the command to pull out the data used on p. 27 of your textbook. (Again, press "Run" to execute the command.)
+Similarly, you can select two variables. For instance, here is the command to pull out the data used on p. 27 of your textbook. (Remember, click "Run Code" to execute the command.)
 
 ```{r new-table_dtk, exercise=TRUE}
 select(Email_50, num_char, line_breaks)
 ```
 
-Now your turn .... In the next box, give the command to pull out `num_char`, `line_breaks`, and `dollar` from the Email_50 dataframe. You can use "Run" to try out any command you compose. If you press "Submit," the tutorial will figure out if you've done the right thing and give you a hint if you haven't.
+Now your turn .... In the next box, type in the command to pull out `num_char`, `line_breaks`, and `dollar` from the Email_50 dataframe. You can use "Run Code" to try out any command you compose. If you press "Submit," the tutorial will figure out if you've done the right thing and give you a hint if you haven't.
 
 ```{r new-table_dtk_2, exercise = TRUE}
 
@@ -160,28 +133,8 @@ line_where(res,
 3
 ```
 
+
 ## Looking ahead: graphical displays of data
-Since we've already seen a scatterplot of `line_breaks` vs. `num_char`, let's look at something a bit different.
-
-How do the number of characters in an email relate to the number of exclamation points in the message part of the email?
-
-Here are the names of the columns in the `Email_50` data.
-```{r reloading2} 
-Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
-```
-
-```{r column-names}
-names(Email_50)
-```
-
-Let's create the new data table. Replace `..variable..` in the R code below with the appropriate variable name for the number of exclamation points ("exclaim") in the *message*. Then click "Run Code."
-
-
-```{r exlaim-table, exercise=TRUE}
-subset(Email_50, select=c("num_char","..variable.."))
-```
-
-## Looking ahead: graphical displays of data (DTK style)
 
 The textbook has a scatterplot of `line_breaks` vs. `num_char`. Here's an R command to make that graph:
 ```{r canned_scatterplot, exercise = TRUE}
@@ -204,18 +157,6 @@ names(Email_50)
 Read through the names and try to figure out the name of the variable counting exclamation marks in the message. (There's also a variable counting exclaimation marks in the email subject. That's not what we want.)
 
 ### Plotting...
-We want to see if the number of exclamation points might depend on the number of characters in the email. Generally, this means we want the number of exclamation points (the response variable) to be on the vertical or $y$-axis. We will put the number of characters (the explanatory variable) on the horizontal or $x$-axis.
-
-In the R code below, replace `..explanatory_var..` and `..response_var..` with the appropriate variable names from the `Email_50` data. Then click "Run Code."
-
-```{r plotting, exercise=TRUE}
-plot(x=Email_50$..explanatory_var.., y=Email_50$..response_var..)
-
-```
-
-In the next lab, we will explore many different ways to look at data using graphs. We will also learn how to do some basic statistical calculations.
-
-### Plotting... (DTK version)
 
 We want to see if the number of exclamation points might depend on the number of characters in the email. Another way to say this is that we want to look at exclamation points *versus* number of characters. Generally, this means we want the number of exclamation points (the response variable) to be on the vertical or $y$-axis. We will put the number of characters (the explanatory variable) on the horizontal or $x$-axis.
 
@@ -246,7 +187,7 @@ In the next lab, we will explore many different ways to look at data using graph
 
 
 
-### Quick Quiz 2
+### Quick Quiz 2 (part 1)
 ```{r quiz2a}
 quiz( question("Looking at the plot of *Number of Exclamation Points vs Number of Characters*, which of the following are true? (check all that apply)",
                answer("There is no association at all between these two variables."),
@@ -260,19 +201,32 @@ quiz( question("Looking at the plot of *Number of Exclamation Points vs Number o
 )
 ```
 
-#### Read this before answering the next question!
-In the first part of Chapter 1, we discussed associations between variables. You can use the code box above to re-create the *Number of Lines vs. Number of Characters* graph from p.27 of your textbook.
+For part 2 of the quiz, click "Next Topic"
 
-You'll need to click "Start Over" in the upper left corner of the code box before you can create this plot.
+## Quick Quiz 2 (part 2)
+For these questions, let's take another look at the graph of `line_breaks` vs. `num_char`.
+
+Don't use your browser's "back" button! Create a fresh copy of the graph using the code here.
+
+```{r canned_scatterplot2, exercise = TRUE}
+gf_point(Email_50, line_breaks ~ num_char)
+```
+
 
 
 ```{r quiz2b}
 quiz(
-  question("Were you able to recreate the graph? (choose the best answer)",
-    answer("Yes"),
-        answer("Yes, but some details are different", correct = TRUE),
-    answer("No.")
-  ),
+  question("Look closely at the graph on page 27 of your textbook and compare it to the graph you just made here. What are the differences? (check all that apply)",
+    answer("The axes are reversed."),
+        answer("The axes labels are different.", correct=TRUE),
+    answer("The data points are in different places."),
+    answer("The points look different, but they're in the same places.", correct=TRUE),
+    answer("The axes are different lengths."),
+    answer("The axes are about the same lengths, but the tick marks are different.", correct=TRUE)
+    
+    ),
+
+  
   question("Which of the following statements are true about the graph of *Number of Lines vs. Number of Characters*? (check all that apply)",
            answer("There is no association at all between these two variables."),
            answer("There is a moderate association between these two variables."),
@@ -288,4 +242,3 @@ quiz(
 ### Instructions for submitting the Lab
 
 At the top of each page in the tutorial there is a login ID and password box. You've been given your ID and password by the instructor. When you enter them into the boxes, the message will change to show that you are properly logged in. Any code that you "Submit" or any quizzes that you answer while logged in will be recorded automatically for the instructor. If you did the tutorial without logging in, press the "start over" label in the table of contents, login again, and repeat your work.
-I have no idea how this is going to work!
