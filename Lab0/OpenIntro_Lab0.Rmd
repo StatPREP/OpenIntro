@@ -7,8 +7,18 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
+# DTK - I added this so that later chunks will have the dataset at the ready
+Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
+library(checkr)
+tutorial_options(exercise.checker = checkr::check_for_learnr)
+library(submittr)
+library(dplyr)
+library(ggformula)
 ```
 
+```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}
+```
+ 
 
 ## Labs?!? Do I need a white coat?
 We usually think of a lab as a place where scientists (or science students) perform experiments. For students, the lab is a hands-on application of what is learned during the lecture part of their science course and a place where they can learn to use the tools used by scientists. 
@@ -37,7 +47,6 @@ Click "Run Code" to see what happens!
 ```{r get-data, exercise=TRUE}
 Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
 Email_50
-
 ```
 
 Do you notice a triangular arrow in the upper right corner of the data table? What do you think that means? What about the information in the bottom row of the data display?
@@ -84,6 +93,10 @@ This is how we tell R that we just want to look at the values for the `num_char`
 Note: the values of this variable represent *thousands* of characters. So a value of 2.1 really means there were 2,100 characters in the email.
 
 ```{r reloading data} 
+# DTK: I'm not sure what this is intended to do. Do you want them to copy it into the code chunk?
+# Option, make this a -setup chunk for restrict-to-num-char
+# Easier, put it in the setup chunk at the top of the document. 
+# That's what I did, which means you don't need this chunk at all.
 Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
 ```
 
@@ -96,6 +109,55 @@ What if we want to have a nice tabular display like we did before, except with f
 
 ```{r new-table, exercise=TRUE}
 subset(Email_50, select=c("num_char","line_breaks"))
+```
+
+## Narrowing it down (DTK Style)
+
+
+NOTE to NICOLE: What I'm doing here is to use R functions that handle variable names concisely, without the need to use dollar signs or quotation marks. 
+
+Many data sets come with more information than we can comfortably view on one screen. For now, we want to work with only one or two variables at a time.
+
+This is how we tell R that we want just the `num_char` variable from the `Email_50` dataframe. (Press "Run" to execute the command.) `num_char`  tells us the number of characters in each email message. 
+Note: the values of this variable represent *thousands* of characters. So a value of 2.1 really means there were 2,100 characters in the email.
+
+
+```{r restrict-to-num-char_dtk, exercise=TRUE}
+select(Email_50, num_char)
+```
+
+Similarly, you can select two variables. For instance, here is the command to pull out the data used on p. 27 of your textbook. (Again, press "Run" to execute the command.)
+
+```{r new-table_dtk, exercise=TRUE}
+select(Email_50, num_char, line_breaks)
+```
+
+Now your turn .... In the next box, give the command to pull out `num_char`, `line_breaks`, and `dollar` from the Email_50 dataframe. You can use "Run" to try out any command you compose. If you press "Submit," the tutorial will figure out if you've done the right thing and give you a hint if you haven't.
+
+```{r new-table_dtk_2, exercise = TRUE}
+
+```
+
+```{r new-table_dtk_2-check}
+#USER_CODE <- quote(select(Email_50, num_char, dollar, line_breaks))
+#USER_CODE <- quote(select(Email_50, num_char))
+code <- for_checkr(USER_CODE)
+res <- if_empty_submission(code, message = "OK. You're starting with a blank. How about if you copy-and-paste the command from the previous code box into this one. That will give you a better starting point.")
+res <- line_where(res, insist(F == select, "Use the `select()` function."))
+dat <- arg_number(res, 1, insist(E == Email_50, "The first argument to `select()` should be `Email_50`, the name of the dataframe."))
+if (failed(dat)) return(dat)
+
+line_where(res,
+           failif(ncol(V) == 2, "You should have the names of all three variables in the command."),
+           insist("dollar" %in% names(V), "You don't have the `dollar` variable in your command."),
+           insist("num_char" %in% names(V), "You don't have the `num_char` variable in your command."),
+           insist("line_breaks" %in% names(V), "You don't have the `line_breaks` variable in your command."),
+           insist(ncol(V) == 3, "You selected more than the three variables asked for."),
+           passif(TRUE, "Good!"))
+```
+
+```{r new-table_dtk_2-code-check}
+3
 ```
 
 ## Looking ahead: graphical displays of data
@@ -119,6 +181,28 @@ Let's create the new data table. Replace `..variable..` in the R code below with
 subset(Email_50, select=c("num_char","..variable.."))
 ```
 
+## Looking ahead: graphical displays of data (DTK style)
+
+The textbook has a scatterplot of `line_breaks` vs. `num_char`. Here's an R command to make that graph:
+```{r canned_scatterplot, exercise = TRUE}
+gf_point(Email_50, line_breaks ~ num_char)
+```
+
+This command is similar to the `select()` command you used before, but you can see two differences: 1) the function here is `gf_point()`, which is a function for making scatterplots. 2) Rather than the variable names being separated by a comma, they are put on either side of the squiggly "tilde" character ~. Tilde is the way you say "versus" in R.
+
+Since we've already seen a scatterplot of `line_breaks` vs. `num_char`, let's look at something a bit different.
+
+How do the number of characters in an email relate to the number of exclamation points in the message part of the email?
+
+Here is a command to show the names of the columns in the `Email_50` data.
+
+
+```{r column-names_dtk, exercise = TRUE}
+names(Email_50)
+```
+
+Read through the names and try to figure out the name of the variable counting exclamation marks in the message. (There's also a variable counting exclaimation marks in the email subject. That's not what we want.)
+
 ### Plotting...
 We want to see if the number of exclamation points might depend on the number of characters in the email. Generally, this means we want the number of exclamation points (the response variable) to be on the vertical or $y$-axis. We will put the number of characters (the explanatory variable) on the horizontal or $x$-axis.
 
@@ -130,6 +214,36 @@ plot(x=Email_50$..explanatory_var.., y=Email_50$..response_var..)
 ```
 
 In the next lab, we will explore many different ways to look at data using graphs. We will also learn how to do some basic statistical calculations.
+
+### Plotting... (DTK version)
+
+We want to see if the number of exclamation points might depend on the number of characters in the email. Another way to say this is that we want to look at exclamation points *versus* number of characters. Generally, this means we want the number of exclamation points (the response variable) to be on the vertical or $y$-axis. We will put the number of characters (the explanatory variable) on the horizontal or $x$-axis.
+
+In the R code below, replace `..explanatory_var..` and `..response_var..` with the appropriate variable names from the `Email_50` data. Then click "Run Code." When you have a graph that you think is right, press "Submit."
+
+```{r plotting_dtk, exercise=TRUE}
+gf_point(Email_50, ..response_var.. ~ ..explanatory_var..)
+```
+
+```{r plotting_dtk-check}
+# USER_CODE <- quote(gf_point(Email_50, exclaim_mess ~ num_char))
+# USER_CODE <- quote(gf_point(Email_50, num_char ~ exclaim_mess))
+code <- for_checkr(USER_CODE)
+res <- line_where(code, insist(F == gf_point, "The `gf_point()` is the name of the scatterplot function. That's what you should use."))
+dat <- data_arg(res, insist(E == Email_50, "You should be using the `Email_50` data set."))
+if (failed(dat)) return(dat)
+res <- formula_arg(res, message = "Make sure to use the squiggly tilde ~ to separate the names of the variables.")
+check(res, 
+             insist("exclaim_mess" %in% all.vars(V), "The response variable should be `exclaim_mess`, not `{{f_lhs(V)}}`."),
+             insist("num_char" %in% all.vars(V), "The explanatory variable should be `num_char`, not `{{f_rhs(V)}}`."),
+             insist("exclaim_mess" == all.vars(V)[[1]], "Remember, the response variable goes to the left of the tilde, the response variable to the right."),
+             passif(TRUE, "That's it!")
+             )
+```
+
+
+In the next lab, we will explore many different ways to look at data using graphs. We will also learn how to do some basic statistical calculations.
+
 
 
 ### Quick Quiz 2
@@ -172,4 +286,6 @@ quiz(
 ```
 
 ### Instructions for submitting the Lab
+
+At the top of each page in the tutorial there is a login ID and password box. You've been given your ID and password by the instructor. When you enter them into the boxes, the message will change to show that you are properly logged in. Any code that you "Submit" or any quizzes that you answer while logged in will be recorded automatically for the instructor. If you did the tutorial without logging in, press the "start over" label in the table of contents, login again, and repeat your work.
 I have no idea how this is going to work!
