@@ -2,6 +2,9 @@
 title: "OpenIntro Lab 0"
 output: learnr::tutorial
 runtime: shiny_prerendered
+tutorial:
+  id: "StatPREP/OpenIntro/Lab0"
+  version: 0.2
 ---
 
 ```{r setup, include=FALSE}
@@ -11,15 +14,14 @@ knitr::opts_chunk$set(echo = FALSE)
 Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
 library(checkr)
 tutorial_options(exercise.checker = checkr::check_for_learnr)
-# library(submittr)
+library(submittr)
 library(dplyr)
 library(ggformula)
 ```
 
-<!--
-```{ child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}
+```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}
 ```
- -->
+
 
 ## Labs?!? Do I need a white coat?
 We usually think of a lab as a place where scientists (or science students) perform experiments. For students, the lab is a hands-on application of what is learned during the lecture part of their science course and a place where they can learn to use the tools used by scientists. 
@@ -95,41 +97,47 @@ This is how we tell R that we want just the `num_char` variable from the `Email_
 Note: the values of this variable represent *thousands* of characters. So a value of 2.1 really means there were 2,100 characters in the email.
 
 
-```{r restrict-to-num-char_dtk, exercise=TRUE}
+```{r restrict-to-num-char, exercise=TRUE}
 select(Email_50, num_char)
 ```
 
 Similarly, you can select two variables. For instance, here is the command to pull out the data used on p. 27 of your textbook. (Remember, click "Run Code" to execute the command.)
 
-```{r new-table_dtk, exercise=TRUE}
+```{r new-table, exercise=TRUE}
 select(Email_50, num_char, line_breaks)
 ```
 
 Now your turn .... In the next box, type in the command to pull out `num_char`, `line_breaks`, and `dollar` from the Email_50 dataframe. You can use "Run Code" to try out any command you compose. If you press "Submit," the tutorial will figure out if you've done the right thing and give you a hint if you haven't.
 
-```{r new-table_dtk_2, exercise = TRUE}
+```{r new-table_2, exercise = TRUE}
 
 ```
 
-```{r new-table_dtk_2-check}
+```{r new-table_2-check}
 #USER_CODE <- quote(select(Email_50, num_char, dollar, line_breaks))
 #USER_CODE <- quote(select(Email_50, num_char))
 code <- for_checkr(USER_CODE)
 res <- if_empty_submission(code, message = "OK. You're starting with a blank. How about if you copy-and-paste the command from the previous code box into this one. That will give you a better starting point.")
 res <- line_where(res, insist(F == select, "Use the `select()` function."))
-dat <- arg_number(res, 1, insist(E == Email_50, "The first argument to `select()` should be `Email_50`, the name of the dataframe."))
+res <- line_where(res, insist(is.data.frame(V), "Something's wrong."))
+# Work around because Email_50 doesn't seem to be in the right scope.
+dat <- arg_number(res, 1, insist(ncol(V) == 21, "The first argument to `select()` should be `Email_50`, the name of the dataframe."))
 if (failed(dat)) return(dat)
 
-line_where(res,
-           failif(ncol(V) == 2, "You should have the names of all three variables in the command."),
-           insist("dollar" %in% names(V), "You don't have the `dollar` variable in your command."),
-           insist("num_char" %in% names(V), "You don't have the `num_char` variable in your command."),
-           insist("line_breaks" %in% names(V), "You don't have the `line_breaks` variable in your command."),
-           insist(ncol(V) == 3, "You selected more than the three variables asked for."),
-           passif(TRUE, "Good!"))
+line_where(res, insist(ncol(V) == 3, "You should have all three variables in your command."),
+           insist(all(names(V) %in% c("num_char", "dollar", "line_breaks")), 
+                  "You have {{names(V)}} as variables. Are these what was asked for?"))
+
+# line_where(res,
+#            failif(ncol(V) == 2, "You should have the names of all three variables in the command."),
+#            insist("dollar" %in% names(V), "You don't have the `dollar` variable in your command."),
+#            insist("num_char" %in% names(V), "You don't have the `num_char` variable in your command."),
+#            insist("line_breaks" %in% names(V), "You don't have the `line_breaks` variable in your command."),
+#            insist(ncol(V) == 3, "You selected more than the three variables asked for."),
+#            passif(TRUE, "Good!"))
 ```
 
-```{r new-table_dtk_2-code-check}
+```{r new-table_2-code-check}
 3
 ```
 
@@ -150,7 +158,7 @@ How do the number of characters in an email relate to the number of exclamation 
 Here is a command to show the names of the columns in the `Email_50` data.
 
 
-```{r column-names_dtk, exercise = TRUE}
+```{r column-names, exercise = TRUE}
 names(Email_50)
 ```
 
@@ -162,17 +170,22 @@ We want to see if the number of exclamation points might depend on the number of
 
 In the R code below, replace `..explanatory_var..` and `..response_var..` with the appropriate variable names from the `Email_50` data. Then click "Run Code." When you have a graph that you think is right, press "Submit."
 
-```{r plotting_dtk, exercise=TRUE}
+```{r plotting, exercise=TRUE}
 gf_point(Email_50, ..response_var.. ~ ..explanatory_var..)
 ```
 
-```{r plotting_dtk-check}
+```{r plotting-check}
 # USER_CODE <- quote(gf_point(Email_50, exclaim_mess ~ num_char))
 # USER_CODE <- quote(gf_point(Email_50, num_char ~ exclaim_mess))
 code <- for_checkr(USER_CODE)
 res <- line_where(code, insist(F == gf_point, "The `gf_point()` is the name of the scatterplot function. That's what you should use."))
-dat <- data_arg(res, insist(E == Email_50, "You should be using the `Email_50` data set."))
+
+# It seems that Email_50 is not always in the right environment for checkr to get a hold of it.
+# Does this have to do with reading it in in the setup chunk. Bug in learnr?
+# Work around? Instead of referring to Email_50, refer to properties of Email_50
+dat <- data_arg(res, insist(ncol(V) == 21, "You should be using the `Email_50` data set."))
 if (failed(dat)) return(dat)
+
 res <- formula_arg(res, message = "Make sure to use the squiggly tilde ~ to separate the names of the variables.")
 check(res, 
              insist("exclaim_mess" %in% all.vars(V), "The response variable should be `exclaim_mess`, not `{{f_lhs(V)}}`."),
