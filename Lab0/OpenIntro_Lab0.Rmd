@@ -176,23 +176,26 @@ gf_point(Email_50, ..response_var.. ~ ..explanatory_var..)
 
 ```{r plotting-check}
 # USER_CODE <- quote(gf_point(Email_50, exclaim_mess ~ num_char))
-# USER_CODE <- quote(gf_point(Email_50, num_char ~ exclaim_mess))
+# USER_CODE <- quote(gf_point(Email_50, exclaim_mess ~ num_char))
 code <- for_checkr(USER_CODE)
-res <- line_where(code, insist(F == gf_point, "The `gf_point()` is the name of the scatterplot function. That's what you should use."))
+res <- line_where(code, insist(TRUE)) # work around for `gf_point` not being in scope in chunk
+# res <- line_where(code, insist(F == gf_point, "The `gf_point()` is the name of the scatterplot function. That's what you should use."))
 
 # It seems that Email_50 is not always in the right environment for checkr to get a hold of it.
 # Does this have to do with reading it in in the setup chunk. Bug in learnr?
 # Work around? Instead of referring to Email_50, refer to properties of Email_50
-dat <- data_arg(res, insist(ncol(V) == 21, "You should be using the `Email_50` data set."))
-if (failed(dat)) return(dat)
+# dat <- data_arg(res, insist(ncol(V) == 21, "You should be using the `Email_50` data set."))
+# if (failed(dat)) return(dat)
 
-res <- formula_arg(res, message = "Make sure to use the squiggly tilde ~ to separate the names of the variables.")
-check(res, 
-             insist("exclaim_mess" %in% all.vars(V), "The response variable should be `exclaim_mess`, not `{{f_lhs(V)}}`."),
-             insist("num_char" %in% all.vars(V), "The explanatory variable should be `num_char`, not `{{f_rhs(V)}}`."),
-             insist("exclaim_mess" == all.vars(V)[[1]], "Remember, the response variable goes to the left of the tilde, the response variable to the right."),
-             passif(TRUE, "That's it!")
-             )
+# res <- formula_arg(res, message = "Make sure to use the squiggly tilde ~ to separate the names of the variables.")
+# res <- check(res, 
+#              insist("exclaim_mess" %in% all.vars(V), "The response variable should be `exclaim_mess`, not `{{f_lhs(V)}}`."),
+#              insist("num_char" %in% all.vars(V), "The explanatory variable should be `num_char`, not `{{f_rhs(V)}}`."),
+#              insist("exclaim_mess" == all.vars(V)[[1]], "Remember, the response variable goes to the left of the tilde, the response variable to the right."),
+#              passif(TRUE, "That's it!")
+#              )
+
+return(res)
 ```
 
 
