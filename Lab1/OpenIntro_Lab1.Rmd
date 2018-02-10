@@ -1,0 +1,194 @@
+---
+title: "OpenIntro Lab 1"
+output: learnr::tutorial
+tutorial:
+  id: "StatPREP/OpenIntro/Lab1"
+  version: 0.1
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+
+tutorial_options(exercise.checker = checkr::check_for_learnr)
+# library(checkr)
+# library(submittr)
+library(dplyr)
+library(ggformula)
+library(openintro)
+data(countyComplete)
+```
+
+<!--
+#```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}
+#```
+-->
+
+## Lab 1: Managing, describing, and visualizing data
+
+
+
+Data to use: CountyComplete data set (Data in CSV & a PDF describing the data/variables can be found in the OpenIntro Repo)
+
+In this lab, you'll be using data collected by the US Census Bureau about each county in the US. These data have been stored in a data frame called `countyComplete`. Run the command in the following block to take a look at the data frame.
+
+
+```{r get-data, exercise=TRUE}
+countyComplete
+```
+ 
+Multiple-choice questions:
+
+1. How many rows?
+2. How many variables?
+3. By scrolling through the data, find the entry that gives the fraction of the Baldwin County, Alabama population who are high-school grades. (87.6)
+
+## Part 1: Understanding the cases and the variables
+
+When you are first encountering a new data frame, you want to make sure you can answer two basic questions:
+
+1. What kind of thing does each row correspond to? This is sometimes called the *unit of observation*.
+2. What does each variable describe? Sometimes this is pretty obvious, for instance with the variables called `state` and `name`. Other times you can make a reasonable guess, as with `pop2010`. Look back at the data frame on the previous page and try to make reasonable guesses about `age_under_5` and `veterans`.
+
+Questions:
+
+1. What's your best guess about `age_under_5`?
+
+    * the number of kids under 5 years old.
+    * the percentage of the population of kids under 5 years old.
+    * the average age of kids under 5 years old.
+    * the number of kids under 5 per family.
+
+2. What's your best guess about `veterans`?
+
+   * the number of veterans living in the county.
+   * the percentage of the population who are veterans.
+   * the number of people receiving health care from the US Veterans' Administration.
+   
+When data are properly collected and organized, you shouldn't have to make guesses about what is the unit of observation or exactly what each of the variables mean. Instead, the data should come with documentation that describe this precisely. 
+
+The US Census Bureau is pretty careful to provide documentation. For the `countyComplete` data frame, you can access this easily with the R command, `help(countyComplete)`. Other sources of data provide documentation in other ways. 
+
+Scan through the documentation of `countyComplete`.
+```{r get_documentation, exercise = TRUE}
+help(countyComplete)
+```
+
+As it happens, the data documentation here isn't very accurate or complete. For instance, look
+up the description of the `veterans` variable. Is it right? 
+
+Now look at `mean_work_travel`. What do you think the *units* of time are:
+
+* hours per year
+* hours per day
+* minutes per year
+* minutes per day
+
+## Minnesota!
+
+General question: Why do you want to restrict things to Minnesota? There's no need to make the data small, and there can be some advantages in comparing across states.
+
+Managing data: use dplyr
+
+Statistics, use df_stats, ggformula
+
+
+
+```{r}
+Minnesota <- countryComplete %>% filter(state == "Minnesota") 
+  
+```  
+
+* add a variable: fraction of variables
+* 
+
+Statistics:
+
+* sum of population over all counties
+* sum of population over all states
+* standard deviation of income across all countries
+
+
+
+load the data and show students how HUGE the dataframe is
+
+show them how to restrict to just Minnesota counties
+
+show them how to restrict to just some of the variables
+
+have them create a new data set from which they’ll work… (just one variable for now – maybe “no_move_in_one_plus_year”?)
+
+ 
+
+Part 2:
+
+Visualize the data with a graph – create a histogram using their MN_no_move data.
+
+How can they change labels, colors, add a title, change number of bins, etc. (I *know* that this is already done because I found it today on the StatPREP site – but it requires a package I don’t currently have installed on my rstudio cloud account.)
+
+ 
+
+Quiz: describing the shape of this data, what happens when they have more bins or fewer bins, etc.
+
+ 
+
+Part 3:
+
+Looking at other visualizations/ways of describing
+
+Finding the “usual” descriptive stats: mean, median, [mode?], standard deviation, [variance?], Q1, Q3
+
+Box-whisker plot (description of what it shows with a quiz?)
+
+ 
+
+Discussion of outliers – how to determine them?
+
+I assume there is a way to create box-whisker plot with the outliers showing. Can it be done without?
+
+ 
+
+Can they explore to determine what percent of the data is within k standard deviations of the mean?
+
+If so – maybe a quiz question or two.
+
+ 
+
+Activity: 1) choose a different variable to investigate and create the new data set (Do we specify which one? If so, can we compare MN to a different state – maybe CA?)
+
+2) with new data set create histogram
+
+3) with new data set get descriptive stats
+
+4) with new data set create box/whisker
+
+ 
+
+Part 4: Now we have these 2 data sets (maybe MN_no_move contrasted with CA_no_move) – can we do something that will allow them  to visualize both distributions on the same graph? (I remember seeing something like this during the workshop – I think there was a small activity written.)
+
+Side-by-side box/whiskers? Histograms on the same axes?
+
+ 
+
+Have quiz questions related to the similarities and differences. (I haven’t looked – I assume there are differences.)
+
+ 
+
+**I would like for them to explore robust vs non-robust somewhere in there [eg, median is more resistant to extreme values than mean], but I don’t know how that might happen. I’m willing to let it go and address it in a different way.
+
+ 
+
+**I am hoping this isn’t too ambitious for a single activity.
+
+
+## Distributions
+
+* number of veterans: skew right
+* no move in last year: skew left
+* income per capita
+* fraction foreign born
+
+## JUST DANNY'S notes for wrangling
+
+* What are the most popular county names?
