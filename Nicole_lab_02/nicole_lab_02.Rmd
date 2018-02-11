@@ -1,0 +1,325 @@
+---
+title: "Comparing distributions"
+output: learnr::tutorial
+tutorial:
+  id: "StatPREP/Nicole_lab_01"
+  version: 0.1
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+
+tutorial_options(exercise.checker = checkr::check_for_learnr)
+# library(checkr)
+# library(submittr)
+library(dplyr)
+library(ggformula)
+library(openintro)
+data(countyComplete)
+Counties <- countyComplete
+```
+
+<!--
+#```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}
+#```
+-->
+
+
+This is where we'll compare several states to one another.
+
+
+## Delete the following.
+
+## Introduction
+
+The point of statistics is to describe how things vary. Of course, "things" is not a precise word to use. It would be better to say, "statistics describes how characteristics vary across the objects being studied."
+
+In this lab, the "objects being studied" are the 3000 or so individual counties in the US. The "characteristics" are quantities tabulated for each county by the US Census Bureau, for instance the population of the county, or the average income of the people in the county.
+
+You'll be using a data frame put together by the OpenIntro authors based on materials on the Census Bureau's web site. We'll be doing two things in this lab:
+
+1. Getting familiar with the organization of the county data frame.
+2. Looking at a few variables about counties and describing their *distributions*. 
+
+## The `Counties` data frame 
+
+The data frame is called `countyComplete`. Run the command in the following block to take a look at the data frame.
+
+
+```{r get-data, exercise=TRUE}
+countyComplete
+```
+ 
+Multiple-choice questions:
+
+1. How many rows?
+2. How many variables?
+3. By scrolling through the data, find the entry that gives the fraction of the Baldwin County, Alabama population who are high-school grades. (87.6)
+
+### Cases and variables
+
+When you are first encountering a new data frame, you want to make sure you can answer two basic questions:
+
+1. What kind of thing does each row correspond to? This is sometimes called the *unit of observation*.
+2. What does each variable describe? Sometimes this is pretty obvious, for instance with the variables called `state` and `name`. Other times you can make a reasonable guess, as with `pop2010`. Look back at the data frame on the previous page and try to make reasonable guesses about `age_under_5` and `veterans`.
+
+Questions:
+
+1. What's your best guess about `age_under_5`?
+
+    * the number of kids under 5 years old.
+    * the percentage of the population of kids under 5 years old.
+    * the average age of kids under 5 years old.
+    * the number of kids under 5 per family.
+
+2. What's your best guess about `veterans`?
+
+   * the number of veterans living in the county.
+   * the percentage of the population who are veterans.
+   * the number of people receiving health care from the US Veterans' Administration.
+  
+### Documentation
+ 
+When data are properly collected and organized, you shouldn't have to make guesses about what is the unit of observation or exactly what each of the variables mean. Instead, the data should come with documentation that describe this precisely. 
+
+The US Census Bureau is pretty careful to provide documentation. For the `countyComplete` data frame, you can access this easily with the R command, `help(countyComplete)`. Other sources of data provide documentation in other ways. 
+
+Scan through the documentation of `countyComplete`.
+```{r get_documentation, exercise = TRUE}
+help(countyComplete)
+```
+
+#### Accuracy of documentation
+
+NICOLE: I don't think we need this in the lab. But it might make a nice exercise for homework.
+
+Regretably, the data documentation here isn't very accurate or complete. For instance, look
+up the description of the `veterans` variable. Is it right? 
+
+Now look at `mean_work_travel`. What do you think the *units* of time are:
+
+* hours per year
+* hours per day
+* minutes per year
+* minutes per day
+
+## Some variables of interest
+
+You're going to be looking at a few of the variables in the `countyComplete` data.
+
+1. `foreign_born`
+#. `persons_per_household`
+#. `mean_work_travel`
+#. `no_move_in_one_plus_year`
+
+Look back at the documentation for `countyComplete` to make sure you see what these variables stand for.
+
+### Describing a variable
+
+We want to describe each of these variables. Just as you might describe a person in many ways -- height, hair color, sex, personality, ... -- there are many ways to describe a variable, for instance:
+
+1. What's a small value? What's a big value?
+2. What's a typical value?
+3. How much variation is there?
+
+A *statistic* is a number that answers a question like these. There are many different statistics because there are many different questions to ask. Sometimes, there are multiple statistics that can be used to answer a given question in slightly different ways. 
+
+In this lab, we'll look at two statistics used to describe a typical value: the *mean* and the *median*. 
+
+We'll also look at another kind of description of a variable:
+
+4. The *shape* of the distribution. There are many possible kinds of shape, but here we'll focus on one of the most basic description, whether the shape is *symmetric* or *skew*. 
+
+### Foreign born
+
+As you know, some people living in the US were born here. Others were born elsewhere. The `foreign_born` variable in the `countyComplete` data frame gives the percentage of the people living in each county who were born outside the US.
+
+Before going on, think about what you expect about this variable. What's the percentage of foreign born in a typical county? What percentage would be pretty large when comparing counties to one another? What percentage would be pretty small?
+
+Write down your answers on a scrap of paper. It doesn't matter whether you're right or wrong, just write down your best guess. The point here is that, when you look at the statistics, you can compare what they show to what you thought before you saw the actual data.
+
+The following commands will calculate the mean and median of the `foreign_born` variable and show the shape.
+
+```{r foreign-born, exercise = TRUE}
+df_stats( ~ foreign_born, data = countyComplete, mean, median)
+gf_histogram( ~ foreign_born, data = countyComplete)
+```
+
+This shape is called "skew". The word skew means that there are a small number of counties that have values that are far away from the values for the majority of counties. In particular, this is a "right-skew" distribution, which is to say that there are a handful of counties that have values for `foreign_born` that are two or three or more times larger than the values for most of the counties.
+
+The mean and the median are statistics quantifying typical values for the variable. You can see from the computer output that the mean percentage of foreign born is about 4.4%. The median is 2.4%. The difference between the mean and median reflects the shape of the distribution. For a right-skew distribution, the mean is bigger than the median. Here, the mean is about twice the median.
+
+### Moved recently?
+
+The awkwardly named `no_move_in_one_plus_year` variable describes what fraction of the county's population did not move living location at any point between 2006 and 2010. Among other things, a low value might mean that a large fraction of people live in unstable households.
+
+```{r moved_recently, exercise = TRUE}
+df_stats( ~ no_move_in_one_plus_year, data = countyComplete, mean, median)
+gf_histogram( ~ no_move_in_one_plus_year, data = countyComplete)
+```
+
+The distribution of `no_move_in_one_plus_year` is skew. More specifically, it is *left-skew*, which means that some counties have values that are much lower than the majority of counties. Left-skew distribution have a mean that is *less* than the median; the opposite of the situation in right-skew distributions.
+
+One way to think about much skewness there is the size of the difference between the mean and median. 
+
+## Not skewed: symmetric
+
+Many variables are *symmetric*, that is, neither left- nor right-skew.
+
+
+```{r work-travel, exercise = TRUE}
+df_stats( ~ mean_work_travel, data = countyComplete, mean, median)
+gf_histogram( ~ mean_work_travel, data = countyComplete)
+```
+
+For a symmetric distribution, the mean and median are just about the same.
+
+## Extremely skew
+
+Some variables have very strongly skew distributions. For instance, the population of the counties varies tremendously, with a handful of counties having populations of one-million or more, while most counties have only about 20,000 people. 
+
+```{r work-travel, exercise = TRUE}
+df_stats( ~ pop2010, data = countyComplete, mean, median)
+gf_histogram( ~ pop2010, data = countyComplete)
+```
+
+For such strongly skewed distributions, most of the counties are much closer to the median than that mean value. For this reason, it's appropriate to use a median to give a sense of a typical value.
+
+It's especially common for variables that deal with money, population, or geographical area to be strongly right skew. This is true not just for US counties, but for countries of the world, or even for the income of individual people.
+
+## Your job
+
+Here are the names of the variables in the `countyComplete` data frame. 
+
+```{r}
+names(countyComplete)
+```
+
+Look through them to find examples of variables that have a symmetric distribution or a right-skew distribution. Write them down as part of your lab summary. (You don't need to look at every one of the variables. Just enough to find some that are pretty symmetric, and a few that are slightly right-skew or extremely right-skew.) If you find any that are left-skew, write those down too. 
+
+Run the following command to do the calculations. You just have to replace the blank with the name of a variable.
+
+```{r explore, exercise = TRUE}
+df_stats( ~ ......, data = countyComplete, mean, median)
+gf_histogram( ~ ......, data = countyComplete)
+```
+
+## To think about ...
+
+For both skew and symmetrically shaped distributions, the median will be close to the large majority of values. Thus, the median is always a sensible description of a typical value.
+
+
+
+## Minnesota!
+
+General question: Why do you want to restrict things to Minnesota? There's no need to make the data small, and there can be some advantages in comparing across states.
+
+Managing data: use dplyr
+
+Statistics, use df_stats, ggformula
+
+
+
+```{r}
+Minnesota <- countryComplete %>% filter(state == "Minnesota") 
+  
+```  
+
+* add a variable: fraction of variables
+* 
+
+Statistics:
+
+* sum of population over all counties
+* sum of population over all states
+* standard deviation of income across all countries
+
+
+
+load the data and show students how HUGE the dataframe is
+
+show them how to restrict to just Minnesota counties
+
+show them how to restrict to just some of the variables
+
+have them create a new data set from which they’ll work… (just one variable for now – maybe “no_move_in_one_plus_year”?)
+
+ 
+
+Part 2:
+
+Visualize the data with a graph – create a histogram using their MN_no_move data.
+
+How can they change labels, colors, add a title, change number of bins, etc. (I *know* that this is already done because I found it today on the StatPREP site – but it requires a package I don’t currently have installed on my rstudio cloud account.)
+
+ 
+
+Quiz: describing the shape of this data, what happens when they have more bins or fewer bins, etc.
+
+ 
+
+Part 3:
+
+Looking at other visualizations/ways of describing
+
+Finding the “usual” descriptive stats: mean, median, [mode?], standard deviation, [variance?], Q1, Q3
+
+Box-whisker plot (description of what it shows with a quiz?)
+
+ 
+
+Discussion of outliers – how to determine them?
+
+I assume there is a way to create box-whisker plot with the outliers showing. Can it be done without?
+
+ 
+
+Can they explore to determine what percent of the data is within k standard deviations of the mean?
+
+If so – maybe a quiz question or two.
+
+ 
+
+Activity: 1) choose a different variable to investigate and create the new data set (Do we specify which one? If so, can we compare MN to a different state – maybe CA?)
+
+2) with new data set create histogram
+
+3) with new data set get descriptive stats
+
+4) with new data set create box/whisker
+
+ 
+
+Part 4: Now we have these 2 data sets (maybe MN_no_move contrasted with CA_no_move) – can we do something that will allow them  to visualize both distributions on the same graph? (I remember seeing something like this during the workshop – I think there was a small activity written.)
+
+Side-by-side box/whiskers? Histograms on the same axes?
+
+ 
+
+Have quiz questions related to the similarities and differences. (I haven’t looked – I assume there are differences.)
+
+ 
+
+**I would like for them to explore robust vs non-robust somewhere in there [eg, median is more resistant to extreme values than mean], but I don’t know how that might happen. I’m willing to let it go and address it in a different way.
+
+ 
+
+**I am hoping this isn’t too ambitious for a single activity.
+
+
+## Distributions
+
+* number of veterans: skew right
+* no move in last year: skew left
+* income per capita
+* fraction foreign born
+
+## JUST DANNY'S notes for wrangling
+
+* What are the most popular county names? group_by, tally, arrange
+* What's the growth in population? mutate
+* What's the growth rate in population? mutate
+* Which are the counties decreasing in population?
+
