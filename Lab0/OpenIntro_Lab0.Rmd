@@ -53,6 +53,8 @@ Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
 Email_50
 ```
 
+The display you see above is called a *data frame*. 
+
 Do you notice a triangular arrow in the upper right corner of the data table? What do you think that means? What about the information in the bottom row of the data display?
 
 You can click on the triangle or the page numbers or "Previous" and "Next" to see what happens.
@@ -62,25 +64,25 @@ If you want to go back to the first version of the display, click "Start Over" i
 ### Quick Quiz 1
 ```{r quiz1}
 quiz(
-  question("How many columns does the `Email_50` data set have?",
+  question("How many columns does the `Email_50` data frame have?",
     answer("5"),
     answer("21", correct = TRUE),
     answer("50"),
     answer("columns?")
   ),
-  question("How many rows does the `Email_50` data set have?",
+  question("How many rows does the `Email_50` data frame have?",
     answer("5"),
     answer("21"),
     answer("50", correct = TRUE),
     answer("rows?")
 ),
-  question("Each of the columns in the data table represents a(n)...",
+  question("Each of the columns in the data frame represents a(n)...",
            answer("observation"),
            answer("experiment"),
            answer("email message"),
            answer("variable", correct=TRUE)
   ),
-question("Each of the rows in the data table represents a(n)...",
+question("Each of the rows in the data frame represents a(n)...",
          answer("observation", correct=TRUE),
          answer("experiment"),
          answer("person"),
@@ -93,7 +95,7 @@ question("Each of the rows in the data table represents a(n)...",
 
 Many data sets come with more information than we can comfortably view on one screen. For now, we want to work with only one or two variables at a time.
 
-This is how we tell R that we want just the `num_char` variable from the `Email_50` dataframe. (Press "Run" to execute the command.) `num_char`  tells us the number of characters in each email message. 
+This is how we tell R that we want just the `num_char` variable from the `Email_50` data frame. (Press "Run" to execute the command.) `num_char`  tells us the number of characters in each email message. 
 Note: the values of this variable represent *thousands* of characters. So a value of 2.1 really means there were 2,100 characters in the email.
 
 
@@ -107,7 +109,7 @@ Similarly, you can select two variables. For instance, here is the command to pu
 select(Email_50, num_char, line_breaks)
 ```
 
-Now your turn .... In the next box, type in the command to pull out `num_char`, `line_breaks`, and `dollar` from the Email_50 dataframe. You can use "Run Code" to try out any command you compose. If you press "Submit," the tutorial will figure out if you've done the right thing and give you a hint if you haven't.
+Now your turn .... In the next box, type in the command to pull out `num_char`, `line_breaks`, and `dollar` from the Email_50 data frame. You can use "Run Code" to try out any command you compose. If you press "Submit," the tutorial will figure out if you've done the right thing and give you a hint if you haven't.
 
 ```{r new-table_2, exercise = TRUE}
 
@@ -121,7 +123,7 @@ res <- if_empty_submission(code, message = "OK. You're starting with a blank. Ho
 res <- line_where(res, insist(F == select, "Use the `select()` function."))
 res <- line_where(res, insist(is.data.frame(V), "Something's wrong."))
 # Work around because Email_50 doesn't seem to be in the right scope.
-dat <- arg_number(res, 1, insist(ncol(V) == 21, "The first argument to `select()` should be `Email_50`, the name of the dataframe."))
+dat <- arg_number(res, 1, insist(ncol(V) == 21, "The first argument to `select()` should be `Email_50`, the name of the data frame."))
 if (failed(dat)) return(dat)
 
 line_where(res, insist(ncol(V) == 3, "You should have all three variables in your command."),
@@ -162,7 +164,7 @@ Here is a command to show the names of the columns in the `Email_50` data.
 names(Email_50)
 ```
 
-Read through the names and try to figure out the name of the variable counting exclamation marks in the message. (There's also a variable counting exclaimation marks in the email subject. That's not what we want.)
+Read through the names and try to figure out the name of the variable counting exclamation marks in the message. (There's also a variable counting exclamation marks in the email subject. That's not what we want.)
 
 ### Plotting...
 

@@ -21,14 +21,16 @@ data(countyComplete)
 Counties <- countyComplete
 ```
 
-<!--
+#<!--
 #```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}
 #```
--->
+#-->
 
 ## Introduction
 
-The point of statistics is to describe how things vary. Of course, "things" is not a precise word to use. It would be better to say, "statistics describes how characteristics vary across the objects being studied."
+One of the Big Ideas of statistics we're studying in this course is called *descriptive statistics.*
+
+The goal of descriptive statistics is to learn about and describe how things vary. What do we mean by "things"? It might be a bit more clear to say, "statistics describes how characteristics vary across the objects being studied."
 
 In this lab, the "objects being studied" are the 3000 or so individual counties in the US. The "characteristics" are quantities tabulated for each county by the US Census Bureau, for instance the population of the county, or the average income of the people in the county.
 
@@ -46,34 +48,62 @@ The data frame is called `countyComplete`. Run the command in the following bloc
 countyComplete
 ```
  
-Multiple-choice questions:
+Answer the following questions about the data frame.
+```{r quiz1}
+quiz(
+  question("How many rows does the `countyComplete` data frame have?",
+    answer("315"),
+    answer("54"),
+    answer("10"),
+    answer("3143", correct = TRUE),
+    answer("Cannot be determined.")
+  ),
+  question("How many variables does the `coutyComplete` data frame have?",
+    answer("315"),
+    answer("10"),
+    answer("53", correct = TRUE),
+    answer("3143"),
+    answer("Cannot be determined.")
+),
+  
+question("Scroll through the data to find the fraction of the population in Baldwin County, Alabama who completed high school.",
+         answer("77.0%"),
+         answer("87.6%", correct=TRUE),
+         answer("85.3%"),
+         answer("Cannot be deterimined."))
+)
+```
 
-1. How many rows?
-2. How many variables?
-3. By scrolling through the data, find the entry that gives the fraction of the Baldwin County, Alabama population who are high-school grades. (87.6)
+
 
 ### Cases and variables
 
 When you are first encountering a new data frame, you want to make sure you can answer two basic questions:
 
-1. What kind of thing does each row correspond to? This is sometimes called the *unit of observation*.
-2. What does each variable describe? Sometimes this is pretty obvious, for instance with the variables called `state` and `name`. Other times you can make a reasonable guess, as with `pop2010`. Look back at the data frame on the previous page and try to make reasonable guesses about `age_under_5` and `veterans`.
+1. What kind of thing does each row correspond to? This is sometimes called a *case* or a *unit of observation*.
+2. What does each variable describe? Sometimes this is pretty obvious, for instance with the variables called `state` and `name`. Other times you can make a reasonable guess, as with `pop2010`. 
 
-Questions:
+Look back at the data frame on the previous page and try to make reasonable guesses about `age_under_5` and `veterans`.
 
-1. What's your best guess about `age_under_5`?
+```{r quiz2}
+quiz(
+  question("What do you think the variable `age_under_5` represents?",
+    answer("The number of children in a county who are under 5 years old."),
+    answer("The percentage of the county's population who are children under 5 years old.", correct = TRUE),
+    answer("The average age of all children in the county who are under 5 years old."),
+    answer("The number of children per family who are under 5 years old."),
+    answer("Cannot be determined.")
+  ),
+  question("What do you think the variable `veterans` represents?",
+    answer("The number of veterans living in the county", correct = TRUE),
+    answer("The percentage of the county's population who are veterans"),
+    answer("The number of people in the county who are receiving health care from the US Veterans' Administration"),
+       answer("Cannot be determined.")
+)
+)
+```
 
-    * the number of kids under 5 years old.
-    * the percentage of the population of kids under 5 years old.
-    * the average age of kids under 5 years old.
-    * the number of kids under 5 per family.
 
-2. What's your best guess about `veterans`?
-
-   * the number of veterans living in the county.
-   * the percentage of the population who are veterans.
-   * the number of people receiving health care from the US Veterans' Administration.
-  
 ### Documentation
  
 When data are properly collected and organized, you shouldn't have to make guesses about what is the unit of observation or exactly what each of the variables mean. Instead, the data should come with documentation that describe this precisely. 
@@ -85,19 +115,17 @@ Scan through the documentation of `countyComplete`.
 help(countyComplete)
 ```
 
-#### Accuracy of documentation
+### Assignment for your Lab 1 Report (Part 1)
 
-NICOLE: I don't think we need this in the lab. But it might make a nice exercise for homework.
+Write answers to each of the following questions in your Lab 1 Report. Use complete sentences.
 
-Regretably, the data documentation here isn't very accurate or complete. For instance, look
-up the description of the `veterans` variable. Is it right? 
+1. Sometimes data documentation here isn't very accurate or complete. Use the documentation you just obtained in the previous code block to look up the description of the `veterans` variable. Is it correct? Why or why not?
 
-Now look at `mean_work_travel`. What do you think the *units* of time are:
+2. Use the data documentation and the data frame to look at the `mean_work_travel` information. (You can revisit the data frame using the code box below.) What do you think the *units* of time are (e.g., hours per year, minutes per week, etc.)? How or why did you choose these units?
 
-* hours per year
-* hours per day
-* minutes per year
-* minutes per day
+```{r review data, exercise=TRUE}
+countyComplete
+```
 
 ## Some variables of interest
 
@@ -108,17 +136,18 @@ You're going to be looking at a few of the variables in the `countyComplete` dat
 #. `mean_work_travel`
 #. `no_move_in_one_plus_year`
 
-Look back at the documentation for `countyComplete` to make sure you see what these variables stand for.
+Look back at the documentation for `countyComplete` to make sure you understand what these variables stand for. You may want to write the information down on a piece of paper.
 
 ### Describing a variable
 
-We want to describe each of these variables. Just as you might describe a person in many ways -- height, hair color, sex, personality, ... -- there are many ways to describe a variable, for instance:
+We want to describe each of these variables. Just as you might describe a person in many ways -- height, hair color, sex, personality, ... -- there are many ways to describe a variable.
 
+For example, for any particular variable:
 1. What's a small value? What's a big value?
 2. What's a typical value?
 3. How much variation is there?
 
-A *statistic* is a number that answers a question like these. There are many different statistics because there are many different questions to ask. Sometimes, there are multiple statistics that can be used to answer a given question in slightly different ways. 
+A *statistic* is a number that can help to answer questions like these. There are many different statistics because there are many different questions to ask. Sometimes, there are multiple statistics that can be used to answer a given question in slightly different ways. 
 
 In this lab, we'll look at two statistics used to describe a typical value: the *mean* and the *median*. 
 
@@ -147,7 +176,7 @@ The mean and the median are statistics quantifying typical values for the variab
 
 ### Moved recently?
 
-The awkwardly named `no_move_in_one_plus_year` variable describes what fraction of the county's population did not move living location at any point between 2006 and 2010. Among other things, a low value might mean that a large fraction of people live in unstable households.
+The awkwardly named `no_move_in_one_plus_year` variable describes what fraction of the county's population did not move (change the location at which they live) at any point between 2006 and 2010. Among other things, a low value might mean that a large fraction of people live in unstable households.
 
 ```{r moved_recently, exercise = TRUE}
 df_stats( ~ no_move_in_one_plus_year, data = countyComplete, mean, median)
@@ -157,6 +186,11 @@ gf_histogram( ~ no_move_in_one_plus_year, data = countyComplete)
 The distribution of `no_move_in_one_plus_year` is skew. More specifically, it is *left-skew*, which means that some counties have values that are much lower than the majority of counties. Left-skew distribution have a mean that is *less* than the median; the opposite of the situation in right-skew distributions.
 
 One way to think about much skewness there is the size of the difference between the mean and median. 
+
+### Assignment for your Lab 1 Report (part 2)
+Answer the following questions as if you are having a discussion with your boss, who has not taken a statistics course. Use complete sentences.
+1. Describe what it means for a county to have a relatively low number in the `no_move_in_one_plus_year` category.
+2. Describe what it means for a county to have a relatively high number in the `no_move_in_one_plus_year` category.
 
 ## Not skewed: symmetric
 
@@ -183,7 +217,7 @@ For such strongly skewed distributions, most of the counties are much closer to 
 
 It's especially common for variables that deal with money, population, or geographical area to be strongly right skew. This is true not just for US counties, but for countries of the world, or even for the income of individual people.
 
-## Your job
+### Assignment for your Lab 1 Report (part 3)
 
 Here are the names of the variables in the `countyComplete` data frame. 
 
@@ -191,13 +225,24 @@ Here are the names of the variables in the `countyComplete` data frame.
 names(countyComplete)
 ```
 
-Look through them to find examples of variables that have a symmetric distribution or a right-skew distribution. Write them down as part of your lab summary. (You don't need to look at every one of the variables. Just enough to find some that are pretty symmetric, and a few that are slightly right-skew or extremely right-skew.) If you find any that are left-skew, write those down too. 
+Find examples of variables (other than the ones we've already seen) that have the designated shapes. Use the code block below to see the different distributions.
+* a symmetric distribution
+* a right-skew distribution
 
-Run the following command to do the calculations. You just have to replace the blank with the name of a variable.
+For each new example, write a short paragraph in which you:
+* Identify the variable by name and describe its meaning.
+* Describe the shape of the distribution for that variable.
+* Were you surprised by the shape or did it make sense to you? Write a sentence or two explaining your answer.
+
+If you find any that are left-skew, write those down too.
+
+Run the following command as many times as you wish. You just have to replace the word VARIABLE with the actual name of a variable.
+
+Tip from Nicole: You can highlight the name of a variable in the list above, then use CTRL-C to copy it and CTRL-V to paste it into the code below. Leave off the quotation marks!
 
 ```{r explore, exercise = TRUE}
-df_stats( ~ ......, data = countyComplete, mean, median)
-gf_histogram( ~ ......, data = countyComplete)
+df_stats( ~ VARIABLE, data = countyComplete, mean, median)
+gf_histogram( ~ VARIABLE, data = countyComplete)
 ```
 
 ## To think about ...
