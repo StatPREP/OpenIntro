@@ -202,7 +202,7 @@ gf_histogram( ~ ......, data = countyComplete)
 
 ## To think about ...
 
-For both skew and symmetrically shaped distributions, the median will be close to the large majority of values. Thus, the median is always a sensible description of a typical value.
+For both skew and symmetrically shaped distributions, the median will be close to the large majority of values. Thus, the median is always a sensible description of a typical value. But for strongly skew distributions, the mean will be further than the median from the majority of values.
 
 
 
