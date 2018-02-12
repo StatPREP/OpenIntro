@@ -21,10 +21,10 @@ data(countyComplete)
 Counties <- countyComplete
 ```
 
-#<!--
-#```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}
-#```
-#-->
+
+<!-- ```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}``` -->
+
+
 
 ## Introduction
 
@@ -217,7 +217,7 @@ For such strongly skewed distributions, most of the counties are much closer to 
 
 It's especially common for variables that deal with money, population, or geographical area to be strongly right skew. This is true not just for US counties, but for countries of the world, or even for the income of individual people.
 
-### Assignment for your Lab 1 Report (part 3)
+## Assignment for your Lab 1 Report (part 3)
 
 Here are the names of the variables in the `countyComplete` data frame. 
 
@@ -225,19 +225,27 @@ Here are the names of the variables in the `countyComplete` data frame.
 names(countyComplete)
 ```
 
-Find examples of variables (other than the ones we've already seen) that have the designated shapes. Use the code block below to see the different distributions.
-* a symmetric distribution
-* a right-skew distribution
+Find examples of variables (other than the ones we've already seen) that have these designated shapes:
 
-For each new example, write a short paragraph in which you:
-* Identify the variable by name and describe its meaning.
-* Describe the shape of the distribution for that variable.
-* Were you surprised by the shape or did it make sense to you? Write a sentence or two explaining your answer.
+1. a symmetric distribution
+2. a right-skew distribution
+
+(Use the code block below to see the different distributions.)
+
+For each new example (one symmetric and one right-skew), write a short paragraph in which you:
+
+1. Identify the variable by name and describe its meaning.
+2. Describe the shape of the distribution for that variable.
+3. Were you surprised by the shape or did it make sense to you? Write a sentence or two explaining your answer.
 
 If you find any that are left-skew, write those down too.
 
-Run the following command as many times as you wish. You just have to replace the word VARIABLE with the actual name of a variable.
 
+### Code Block for Exloring Distributions
+
+Run the following command as many times as you wish. You just have to replace the word `VARIABLE` with the actual name of a variable.
+
+<!-- (This tip is for my students.) -->
 Tip from Nicole: You can highlight the name of a variable in the list above, then use CTRL-C to copy it and CTRL-V to paste it into the code below. Leave off the quotation marks!
 
 ```{r explore, exercise = TRUE}
@@ -246,6 +254,7 @@ gf_histogram( ~ VARIABLE, data = countyComplete)
 ```
 
 ## To think about ...
+DANNY: I'm not sure what to do with this. I could assign a reflection question (something to post in a discussion board or include in their Lab Report). Or we could just leave it out of the Lab.
 
 For both skew and symmetrically shaped distributions, the median will be close to the large majority of values. Thus, the median is always a sensible description of a typical value. But for strongly skew distributions, the mean will be further than the median from the majority of values.
 

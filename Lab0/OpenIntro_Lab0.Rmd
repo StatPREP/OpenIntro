@@ -14,13 +14,13 @@ knitr::opts_chunk$set(echo = FALSE)
 Email_50 <- read.csv("https://nicolelang.github.io/Math1130/email50.csv")
 library(checkr)
 tutorial_options(exercise.checker = checkr::check_for_learnr)
-library(submittr)
+#library(submittr)
 library(dplyr)
 library(ggformula)
 ```
 
-```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}
-```
+<!--  ```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")} -->
+<!--  ``` -->
 
 
 ## Labs?!? Do I need a white coat?
@@ -76,7 +76,7 @@ quiz(
     answer("50", correct = TRUE),
     answer("rows?")
 ),
-  question("Each of the columns in the data frame represents a(n)...",
+  question("Each of the columns (the ones with titles at the top) in the data frame represents a(n)...",
            answer("observation"),
            answer("experiment"),
            answer("email message"),
@@ -170,10 +170,10 @@ Read through the names and try to figure out the name of the variable counting e
 
 We want to see if the number of exclamation points might depend on the number of characters in the email. Another way to say this is that we want to look at exclamation points *versus* number of characters. Generally, this means we want the number of exclamation points (the response variable) to be on the vertical or $y$-axis. We will put the number of characters (the explanatory variable) on the horizontal or $x$-axis.
 
-In the R code below, replace `..explanatory_var..` and `..response_var..` with the appropriate variable names from the `Email_50` data. Then click "Run Code." When you have a graph that you think is right, press "Submit."
+In the R code below, replace `EXPLANATORY` and `RESPONSE` with the appropriate variable names from the `Email_50` data. Then click "Run Code." When you have a graph that you think is right, press "Submit."
 
 ```{r plotting, exercise=TRUE}
-gf_point(Email_50, ..response_var.. ~ ..explanatory_var..)
+gf_point(Email_50, RESPONSE ~ EXPLANATORY)
 ```
 
 ```{r plotting-check}
@@ -259,4 +259,14 @@ quiz(
 
 ### Instructions for submitting the Lab
 
-At the top of each page in the tutorial there is a login ID and password box. You've been given your ID and password by the instructor. When you enter them into the boxes, the message will change to show that you are properly logged in. Any code that you "Submit" or any quizzes that you answer while logged in will be recorded automatically for the instructor. If you did the tutorial without logging in, press the "start over" label in the table of contents, login again, and repeat your work.
+At the top of each page in the tutorial there is a login ID and password box. **If you've been given your ID and password by the instructor**, enter them into the boxes. If entered correctly, the message will change to show that you are properly logged in. Any code that you "Submit" or any quizzes that you answer while logged in will be recorded automatically for the instructor. If you did the tutorial without logging in, press the "start over" label in the table of contents, login again, and repeat your work.
+
+### Assignment for your Lab 0 Report
+
+**For students who do not have a login ID and password, answer the following questions for your Lab 0 Report.**
+
+Thinking about all of the things you read and observed in this Lab,
+
+1. Write down one thing that surprised you. Why did it surpise you?
+2. Write down one question you have about using technology to help us learn statistics.
+3. Sketch the scatterplot you created with Exclamation Points vs. Number of Characters. (Or grab a screen shot of your scatterplot and insert it into your Report.)
