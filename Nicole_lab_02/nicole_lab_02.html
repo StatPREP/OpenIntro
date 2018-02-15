@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<meta name="progressive" content="false" />
+<meta name="allow-skip" content="false" />
+
+<title>Comparing distributions</title>
+
+
+<!-- highlightjs -->
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+
+
+<div class="pageContent band">
+<div class="bandContent page">
+
+<div class="topics">
+
+<div id="section-comparing-groups" class="section level2">
+<h2>Comparing groups</h2>
+<p>In <a href="https://dtkaplan.shinyapps.io/nicole_lab_01/">the previous lab</a> you looked at the distribution across US counties of quantities such as population, commute time, and so on. In this lab you’ll divide counties up into groups and compare the different groups. More specifically, you’ll compare Minnesota counties to those in a few other states: California, Illinois, Iowa, and so on.</p>
+<p>To start, remind yourself what the <code>countyComplete</code> data frame looks like:</p>
+<div class="tutorial-exercise" data-label="countyComplete1" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>countyComplete</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label = NULL, user_code = NULL, solution_code = NULL, ","    check_code = NULL, envir_result = NULL, evaluate_result = NULL, ","    ..., debug = FALSE) ","{","    if (debug) {","        save_file_name <- sprintf(\"~/Downloads/CheckR/chunk-%s.rds\", ","            label)","        saveRDS(list(label = label, user_code = user_code, solution_code = solution_code, ","            check_code = check_code, envir = envir_result, evaluate_result = evaluate_result), ","            file = save_file_name)","    }","    if (is.null(envir_result)) {","        res <- pre_check(user_code, solution_code)","        if (failed(res)) {","            return(list(correct = FALSE, type = \"error\", location = \"prepend\", ","                message = res$message))","        }","        else {","            return(TRUE)","        }","    }","    if (!is.null(envir_result)) {","        res <- parse_check(user_code)","        if (!res$correct) {","            return(list(correct = FALSE, type = \"error\", location = \"prepend\", ","                message = res$message))","        }","    }","    parsed_check_code <- parse(text = check_code)","    res <- eval(parsed_check_code, envir = list(USER_CODE = user_code))","    if (res$action == \"ok\" && res$message == \"\") ","        res$message = \"Good\"","    feedback_type <- switch(res$action, pass = \"success\", fail = \"error\", ","        ok = \"warning\")","    final <- list(correct = (res$action == \"pass\"), message = res$message, ","        type = feedback_type, location = \"prepend\")","    final","}"]}</script>
+</div>
+</div>
+<div id="section-data-wrangling" class="section level2">
+<h2>Data wrangling</h2>
+<p>“Data wrangling” is the process of modifying data frames so that they are in a format that makes the construction of graphics or the calculation of statistics very easy. It’s important to remember that data wrangling is not about changing the values of variables (that’s called “lying”!). Wrangling is about reformatting the authentic data values.</p>
+<p>Data wrangling is an entire subject in itself. We’re going to cover only the very basics, which are straightforward. But you know that data wrangling is a crucial component of most uses of data, and there are many well-paying jobs in this field. So, if you read a job notice and see the word “database” or the name “SQL”, you’ll know that the job involves data wrangling. (SQL stands for “Structured Query Language”. “Query” is one of the words used to describe parts of data wrangling.)</p>
+<p>In this lab, we’ll be looking at just a few of the states in the <code>countyComplete</code> data. The wrangling you’ll have to do involves constructing a subset of <code>countyComplete</code> that contains just the states we’re interested in. The next block contains the data-wrangling command to create a new data frame with just some states of interest.</p>
+<p>Here’s a short explanation of what’s going on. The first line creates a set of state names. (The <code>c()</code> stands for “collect together”.) Each of those state names is enclosed in quotation marks. Note also that they are separated by commas: that’s part of the way R works. The left pointing arrow <code>&lt;-</code> means to give the collection a name: <code>states_of_interest</code>. That makes it easy to refer to the collection in the next command.</p>
+<p>The second through fourth lines create an object called <code>Our_states</code>. That’s the <code>Our_states &lt;-</code> part of the command. That’s not a complete command, so R goes on to the next line. There, we are saying that the whole data frame (<code>countyComplete</code>) should be sent into (<code>%&gt;%</code>) a command called <code>filter()</code>. As the name suggests, <code>filter()</code> allows you to choose which rows you want to keep. The <code>state %in% states_of_interest</code> part of the command is the specification of the rows that will be kept: those where the value of the <code>state</code> variable is one of the <code>states_of_interest</code>.</p>
+<p>Don’t worry about mastering the details of such a command. But do make sure you understand enough that you would be comfortable adding another state to the <code>states_of_interest</code> and that the output of the wrangling procedure is a new data frame named <code>Our_states</code>.</p>
+<div class="tutorial-exercise" data-label="wrangle1" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>states_of_interest &lt;- c(&quot;Minnesota&quot;, &quot;California&quot;, &quot;Iowa&quot;, &quot;Illinois&quot;)
+Our_states &lt;- 
+  countyComplete %&gt;%
+  filter(state %in% states_of_interest)
+Our_states # this simply displays the data frame</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label = NULL, user_code = NULL, solution_code = NULL, ","    check_code = NULL, envir_result = NULL, evaluate_result = NULL, ","    ..., debug = FALSE) ","{","    if (debug) {","        save_file_name <- sprintf(\"~/Downloads/CheckR/chunk-%s.rds\", ","            label)","        saveRDS(list(label = label, user_code = user_code, solution_code = solution_code, ","            check_code = check_code, envir = envir_result, evaluate_result = evaluate_result), ","            file = save_file_name)","    }","    if (is.null(envir_result)) {","        res <- pre_check(user_code, solution_code)","        if (failed(res)) {","            return(list(correct = FALSE, type = \"error\", location = \"prepend\", ","                message = res$message))","        }","        else {","            return(TRUE)","        }","    }","    if (!is.null(envir_result)) {","        res <- parse_check(user_code)","        if (!res$correct) {","            return(list(correct = FALSE, type = \"error\", location = \"prepend\", ","                message = res$message))","        }","    }","    parsed_check_code <- parse(text = check_code)","    res <- eval(parsed_check_code, envir = list(USER_CODE = user_code))","    if (res$action == \"ok\" && res$message == \"\") ","        res$message = \"Good\"","    feedback_type <- switch(res$action, pass = \"success\", fail = \"error\", ","        ok = \"warning\")","    final <- list(correct = (res$action == \"pass\"), message = res$message, ","        type = feedback_type, location = \"prepend\")","    final","}"]}</script>
+</div>
+<p>Run the command and browse through the <code>Our_states</code> data frame to confirm that it is doing what’s expected. Then modify the <code>states_of_interest</code>: for instance, take out California and put in Wyoming.</p>
+</div>
+<div id="section-comparing-statistics-state-by-state" class="section level2">
+<h2>Comparing statistics state-by-state</h2>
+<p>In the previous lab, you used the <code>df_stats()</code> function to compute the mean and median of a variable. You’re going to use that command again, but slighly modified so that the different states are shown side-by-side.</p>
+<p>Try it on the fraction of the population (aged over 18) who are high-school graduates, <code>hs_grad</code>.</p>
+<div class="tutorial-exercise" data-label="stats_by_state" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>states_of_interest &lt;- c(&quot;Minnesota&quot;, &quot;California&quot;, &quot;Iowa&quot;, &quot;Illinois&quot;)
+Our_states &lt;- 
+  countyComplete %&gt;%
+  filter(state %in% states_of_interest)
+df_stats(hs_grad ~ state, data = Our_states, mean, median)</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label = NULL, user_code = NULL, solution_code = NULL, ","    check_code = NULL, envir_result = NULL, evaluate_result = NULL, ","    ..., debug = FALSE) ","{","    if (debug) {","        save_file_name <- sprintf(\"~/Downloads/CheckR/chunk-%s.rds\", ","            label)","        saveRDS(list(label = label, user_code = user_code, solution_code = solution_code, ","            check_code = check_code, envir = envir_result, evaluate_result = evaluate_result), ","            file = save_file_name)","    }","    if (is.null(envir_result)) {","        res <- pre_check(user_code, solution_code)","        if (failed(res)) {","            return(list(correct = FALSE, type = \"error\", location = \"prepend\", ","                message = res$message))","        }","        else {","            return(TRUE)","        }","    }","    if (!is.null(envir_result)) {","        res <- parse_check(user_code)","        if (!res$correct) {","            return(list(correct = FALSE, type = \"error\", location = \"prepend\", ","                message = res$message))","        }","    }","    parsed_check_code <- parse(text = check_code)","    res <- eval(parsed_check_code, envir = list(USER_CODE = user_code))","    if (res$action == \"ok\" && res$message == \"\") ","        res$message = \"Good\"","    feedback_type <- switch(res$action, pass = \"success\", fail = \"error\", ","        ok = \"warning\")","    final <- list(correct = (res$action == \"pass\"), message = res$message, ","        type = feedback_type, location = \"prepend\")","    final","}"]}</script>
+</div>
+<p>Question: Remember that for symmetric distributions, the mean and median are about the same. For left-skew distributions, the mean is less than the median. Comparing the numbers in the table, which state has the most left-skew distribution of high-school graduates. Explain what this means by filling in the blanks in this sentence:</p>
+<blockquote>
+<p>The state of —– has a few counties with a substantially —– fraction of high-school graduates than the large majority of counties in that state. (For the second blank, choose one of “lower” or “higher”).</p>
+</blockquote>
+</div>
+<div id="section-displaying-distributions-state-by-state" class="section level2">
+<h2>Displaying distributions state-by-state</h2>
+<p>Let’s return to graphical displays. In the previous lab, we used a histogram to show the distribution of a variable, like this:</p>
+<div class="tutorial-exercise" data-label="hist_overall" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>states_of_interest &lt;- c(&quot;Minnesota&quot;, &quot;California&quot;, &quot;Iowa&quot;, &quot;Illinois&quot;)
+Our_states &lt;- 
+  countyComplete %&gt;%
+  filter(state %in% states_of_interest)
+gf_histogram( ~ hs_grad, data = Our_states)</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label = NULL, user_code = NULL, solution_code = NULL, ","    check_code = NULL, envir_result = NULL, evaluate_result = NULL, ","    ..., debug = FALSE) ","{","    if (debug) {","        save_file_name <- sprintf(\"~/Downloads/CheckR/chunk-%s.rds\", ","            label)","        saveRDS(list(label = label, user_code = user_code, solution_code = solution_code, ","            check_code = check_code, envir = envir_result, evaluate_result = evaluate_result), ","            file = save_file_name)","    }","    if (is.null(envir_result)) {","        res <- pre_check(user_code, solution_code)","        if (failed(res)) {","            return(list(correct = FALSE, type = \"error\", location = \"prepend\", ","                message = res$message))","        }","        else {","            return(TRUE)","        }","    }","    if (!is.null(envir_result)) {","        res <- parse_check(user_code)","        if (!res$correct) {","            return(list(correct = FALSE, type = \"error\", location = \"prepend\", ","                message = res$message))","        }","    }","    parsed_check_code <- parse(text = check_code)","    res <- eval(parsed_check_code, envir = list(USER_CODE = user_code))","    if (res$action == \"ok\" && res$message == \"\") ","        res$message = \"Good\"","    feedback_type <- switch(res$action, pass = \"success\", fail = \"error\", ","        ok = \"warning\")","    final <- list(correct = (res$action == \"pass\"), message = res$message, ","        type = feedback_type, location = \"prepend\")","    final","}"]}</script>
+</div>
+<p>Now we want to reconfigure the plot so that separate histograms are drawn for each state.</p>
+<p>This is a good time to stop and think about the problem. What do you think the graphic should look like? Should we use color to distinguish the states from one another? If we did, would we want the differently colored bars overlap one another or be put side-by-side? Perhaps we should draw each state’s histogram in it’s own frame?</p>
+<p>There’s no single correct answer to such questions. Pretty much all you can do is try out the different possibilities and decide for yourself which one is best.</p>
+<p>Here are some different histogram commands for the different possibilities. You don’t have to worry about understanding the details of the commands; your job is to focus on the graphs themselves. You can generate the graphs by replacing the <code>gf_histogram( ~ hs_grad, data = Our_states)</code> in the above block and then re-running the block. (You can cut-and-paste all three commands into the block, so that the different possibilities will show up in sequence.)</p>
+<ul>
+<li><code>gf_histogram( ~ hs_grad | state, data = Our_states)</code></li>
+<li><code>gf_histogram( ~ hs_grad, fill = ~ state, data = Our_states)</code></li>
+<li><code>gf_histogram( ~ hs_grad, fill = ~ state, data = Our_states, position = &quot;dodge&quot;)</code></li>
+</ul>
+<p>Decide which of these three possibilities you think is the most informative. And then think about what confusing about even this best display. After all, nobody said the histogram is the only way to graph a distribution.</p>
+</div>
+<div id="section-can-we-do-better" class="section level2">
+<h2>Can we do better?</h2>
+<p>Statisticians have developed alternatives to the histogram that many people think are easier to read. One of these is called the “box-and-whisker plot.”</p>
+<div class="tutorial-exercise" data-label="non_hist" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
+<pre class="text"><code>states_of_interest &lt;- c(&quot;Minnesota&quot;, &quot;California&quot;, &quot;Iowa&quot;, &quot;Illinois&quot;)
+Our_states &lt;- 
+  countyComplete %&gt;%
+  filter(state %in% states_of_interest)
+gf_boxplot( hs_grad ~ state, data = Our_states)</code></pre>
+<script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":["function (label = NULL, user_code = NULL, solution_code = NULL, ","    check_code = NULL, envir_result = NULL, evaluate_result = NULL, ","    ..., debug = FALSE) ","{","    if (debug) {","        save_file_name <- sprintf(\"~/Downloads/CheckR/chunk-%s.rds\", ","            label)","        saveRDS(list(label = label, user_code = user_code, solution_code = solution_code, ","            check_code = check_code, envir = envir_result, evaluate_result = evaluate_result), ","            file = save_file_name)","    }","    if (is.null(envir_result)) {","        res <- pre_check(user_code, solution_code)","        if (failed(res)) {","            return(list(correct = FALSE, type = \"error\", location = \"prepend\", ","                message = res$message))","        }","        else {","            return(TRUE)","        }","    }","    if (!is.null(envir_result)) {","        res <- parse_check(user_code)","        if (!res$correct) {","            return(list(correct = FALSE, type = \"error\", location = \"prepend\", ","                message = res$message))","        }","    }","    parsed_check_code <- parse(text = check_code)","    res <- eval(parsed_check_code, envir = list(USER_CODE = user_code))","    if (res$action == \"ok\" && res$message == \"\") ","        res$message = \"Good\"","    feedback_type <- switch(res$action, pass = \"success\", fail = \"error\", ","        ok = \"warning\")","    final <- list(correct = (res$action == \"pass\"), message = res$message, ","        type = feedback_type, location = \"prepend\")","    final","}"]}</script>
+</div>
+<p>In each of the box-and-whisker icons, there is a box in the center with whiskers reaching out of the box. First, note that it is the <em>vertical</em> axis that stands for the fraction of high-school graduates. The box tells you the range of the middle 50% of the counties, from the 25% to the 75% quantile. The line in the middle shows the value of the median (also known as the 50% quantile.) The lower whisker shows the range of the bottom 25% of counters — from the county with the lowest proportion of high-school graduates to the 25% quantile. The upper whisker shows the range from the 75% quantile to the county with the highest proportion of high-school graduates.</p>
+<p>Notice that for Illinois, Iowa, and Minnesota there are also some dots placed below the lower whisker. Each of these dots stands for a county. They are shown differently to highlight that they are far from the large majority of counties in those states. The word “outlier” is used to describe such counties.</p>
+<p>Statisticians have found that displaying such outliers with dots rather than the whisker helps to draw the reader’s attention to these exceptional counties in a way that’s not so distracting that you don’t miss out on the message from the large majority of counties.</p>
+<p>Sometimes outliers are a sign that there’s something wrong with the data, for instance a mistake recording a value. Other times an outlier is a perfectly authentic value, it’s just that the distribution is sufficiently skew that some values are far away from the majority of values.</p>
+<p>Questions:</p>
+<ul>
+<li>In which state are the values for the different counties spread out the most?</li>
+<li>Which state has the largest median value for the proportion of high-school graduates?</li>
+<li>In which state is the single county with the largest proportion of high-school graduates?</li>
+<li>How many counties in Minnesota are marked as being outliers? If those counties were magically moved to California, would they still be outliers?</li>
+</ul>
+</div>
+<div id="section-your-task" class="section level2">
+<h2>Your task</h2>
+<p>Find a variable for which there are outliers <em>above</em> the whiskers. Find a variable for which there are outliers both <em>above</em> and <em>below</em> the whiskers.</p>
+
+<script type="application/shiny-prerendered" data-context="server-start">
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(ggformula)
+library(openintro)
+data(countyComplete)
+Counties <- countyComplete
+tutorial_options(exercise.checker = checkr::check_for_learnr)
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+learnr:::register_http_handlers(session, metadata = list(id = "StatPREP/Nicole_lab_02", version = 0.1))
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-countyComplete1-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-countyComplete1-code-editor`)), session)
+output$`tutorial-exercise-countyComplete1-output` <- renderUI({
+  `tutorial-exercise-countyComplete1-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-wrangle1-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-wrangle1-code-editor`)), session)
+output$`tutorial-exercise-wrangle1-output` <- renderUI({
+  `tutorial-exercise-wrangle1-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-stats_by_state-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-stats_by_state-code-editor`)), session)
+output$`tutorial-exercise-stats_by_state-output` <- renderUI({
+  `tutorial-exercise-stats_by_state-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-hist_overall-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-hist_overall-code-editor`)), session)
+output$`tutorial-exercise-hist_overall-output` <- renderUI({
+  `tutorial-exercise-hist_overall-result`()
+})
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="server">
+`tutorial-exercise-non_hist-result` <- learnr:::setup_exercise_handler(reactive(req(input$`tutorial-exercise-non_hist-code-editor`)), session)
+output$`tutorial-exercise-non_hist-output` <- renderUI({
+  `tutorial-exercise-non_hist-result`()
+})
+</script>
+ <!--html_preserve-->
+<script type="application/shiny-prerendered" data-context="dependencies">
+{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["jquery"]},{"type":"character","attributes":{},"value":["1.11.3"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/jquery-1.11.3"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquery.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["bootstrap"]},{"type":"character","attributes":{},"value":["3.3.5"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/bootstrap-3.3.5"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["viewport"]}},"value":[{"type":"character","attributes":{},"value":["width=device-width, initial-scale=1"]}]},{"type":"character","attributes":{},"value":["js/bootstrap.min.js","shim/html5shiv.min.js","shim/respond.min.js"]},{"type":"character","attributes":{},"value":["css/cerulean.min.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["pagedtable"]},{"type":"character","attributes":{},"value":["1.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/pagedtable-1.1"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["js/pagedtable.js"]},{"type":"character","attributes":{},"value":["css/pagedtable.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["highlightjs"]},{"type":"character","attributes":{},"value":["1.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["href"]}},"value":[{"type":"character","attributes":{},"value":["nicole_lab_02_files/highlightjs-1.1"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["highlight.js"]},{"type":"character","attributes":{},"value":["textmate.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial.js"]},{"type":"character","attributes":{},"value":["tutorial.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-autocompletion"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-autocompletion.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-diagnostics"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-diagnostics.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-format"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmarkdown/templates/tutorial/resources"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-format.js"]},{"type":"character","attributes":{},"value":["tutorial-format.css","rstudio-theme.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["jquery"]},{"type":"character","attributes":{},"value":["1.11.3"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/jquery-1.11.3"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["jquery.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["font-awesome"]},{"type":"character","attributes":{},"value":["4.5.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["rmd/h/font-awesome-4.5.0"]}]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["css/font-awesome.min.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["rmarkdown"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["bootbox"]},{"type":"character","attributes":{},"value":["4.4.0"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/bootbox"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["bootbox.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["localforage"]},{"type":"character","attributes":{},"value":["1.5"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/localforage"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["localforage.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial.js"]},{"type":"character","attributes":{},"value":["tutorial.css"]},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-autocompletion"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-autocompletion.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["tutorial-diagnostics"]},{"type":"character","attributes":{},"value":["0.9.1"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/tutorial"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["tutorial-diagnostics.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["ace"]},{"type":"character","attributes":{},"value":["1.2.6"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/ace"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["ace.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","version","src","meta","script","stylesheet","head","attachment","package","all_files"]},"class":{"type":"character","attributes":{},"value":["html_dependency"]}},"value":[{"type":"character","attributes":{},"value":["clipboardjs"]},{"type":"character","attributes":{},"value":["1.5.15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["file"]}},"value":[{"type":"character","attributes":{},"value":["lib/clipboardjs"]}]},{"type":"NULL"},{"type":"character","attributes":{},"value":["clipboard.min.js"]},{"type":"NULL"},{"type":"NULL"},{"type":"NULL"},{"type":"character","attributes":{},"value":["learnr"]},{"type":"logical","attributes":{},"value":[true]}]}]}
+</script>
+<!--/html_preserve-->
+</div>
+
+</div> <!-- topics -->
+
+<div class="topicsContainer">
+<div class="topicsPositioner">
+<div class="band">
+<div class="bandContent topicsListContainer">
+
+<!-- begin doc-metadata -->
+<div id="doc-metadata">
+<h2 class="title toc-ignore" style="display:none;">Comparing distributions</h2>
+</div>
+<!-- end doc-metadata -->
+
+</div> <!-- bandContent.topicsListContainer -->
+</div> <!-- band -->
+</div> <!-- topicsPositioner -->
+</div> <!-- topicsContainer -->
+
+
+</div> <!-- bandContent page -->
+</div> <!-- pageContent band -->
+
+
+
+
+<script>
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+
+</html>

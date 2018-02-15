@@ -10,7 +10,7 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
-#library(checkr)
+library(checkr)
 library(dplyr)
 library(ggformula)
 library(openintro)
@@ -22,20 +22,14 @@ tutorial_options(exercise.checker = checkr::check_for_learnr)
 
 ```{r include = FALSE}
 # uses the dbkeys.yml file to authenticate
-# library(submittr)
-# library(uuid)
-# options(tutorial.event_recorder = 
-#           submittr::create_submit_to_db(table_name = "higgins",
-#                               password_table_name = "passwords"))
-# unique_session <- substr(UUIDgenerate(), 1, 8)
-# submittr::set_user(paste0("anonymous_", unique_session), "student", "Danny")
+library(submittr)
+library(uuid)
+options(tutorial.event_recorder =
+          submittr::create_submit_to_db(table_name = "higgins",
+                              password_table_name = "passwords"))
+unique_session <- substr(UUIDgenerate(), 1, 8)
+submittr::set_user(paste0("anonymous_", unique_session), "student", "Danny")
 ```
-
-
-
-
-<!-- ```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}``` -->
-
 
 
 ## Introduction
@@ -51,7 +45,7 @@ You'll be using a data frame put together by the OpenIntro authors based on mate
 1. Getting familiar with the organization of the county data frame.
 2. Looking at a few variables about counties and describing their *distributions*. 
 
-## The `Counties` data frame 
+## The `countyComplete` data frame 
 
 The data frame is called `countyComplete`. Run the command in the following block to take a look at the data frame.
 
@@ -265,7 +259,7 @@ df_stats( ~ VARIABLE, data = countyComplete, mean, median)
 gf_histogram( ~ VARIABLE, data = countyComplete)
 ```
 
-```{r explore-check, eval = FALSE}
+```{r explore-check}
 # USER_CODE <- "df_stats( ~ popp2000, data = countyComplete, mean, median)
 # gf_histogram( ~ pop2010, data = countyComplete)"
 code <- for_checkr(USER_CODE)
