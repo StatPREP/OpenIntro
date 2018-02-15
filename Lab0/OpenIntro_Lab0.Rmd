@@ -17,6 +17,7 @@ tutorial_options(exercise.checker = checkr::check_for_learnr)
 #library(submittr)
 library(dplyr)
 library(ggformula)
+library(openintro)
 ```
 
 <!--  ```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")} -->
@@ -36,7 +37,6 @@ This web site is connected (behind the scenes) to a server running software call
 There are many reasons! One of them is that some of your classmates might not have their own computers, and students are not allowed to install software on NHCC's computers. Another is that R isn't a "point at the icon and click" kind of program. This web site can help with both of those reasons!
 
 Are you ready? Let's explore!
-
 
 ## Step 1: Looking at data
 Your textbook refers to several data sets in chapter 1. Let's find out how to look at these data sets.

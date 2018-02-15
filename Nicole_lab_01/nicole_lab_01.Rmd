@@ -10,16 +10,28 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 knitr::opts_chunk$set(echo = FALSE)
-
-tutorial_options(exercise.checker = checkr::check_for_learnr)
-# library(checkr)
-# library(submittr)
+#library(checkr)
 library(dplyr)
 library(ggformula)
 library(openintro)
 data(countyComplete)
 Counties <- countyComplete
+tutorial_options(exercise.checker = checkr::check_for_learnr)
 ```
+
+
+```{r include = FALSE}
+# uses the dbkeys.yml file to authenticate
+# library(submittr)
+# library(uuid)
+# options(tutorial.event_recorder = 
+#           submittr::create_submit_to_db(table_name = "higgins",
+#                               password_table_name = "passwords"))
+# unique_session <- substr(UUIDgenerate(), 1, 8)
+# submittr::set_user(paste0("anonymous_", unique_session), "student", "Danny")
+```
+
+
 
 
 <!-- ```{r child = system.file("shiny/login/login-mockup.Rmd", package = "submittr")}``` -->
@@ -32,7 +44,7 @@ One of the Big Ideas of statistics we're studying in this course is called *desc
 
 The goal of descriptive statistics is to learn about and describe how things vary. What do we mean by "things"? It might be a bit more clear to say, "statistics describes how characteristics vary across the objects being studied."
 
-In this lab, the "objects being studied" are the 3000 or so individual counties in the US. The "characteristics" are quantities tabulated for each county by the US Census Bureau, for instance the population of the county, or the average income of the people in the county.
+In this lab, the "objects being studied" are the 3000 or so individual counties in the US. The "characteristics" are quantities tabulated for each county by the US Census Bureau, for instance the population of the county or the average income of the people in the county.
 
 You'll be using a data frame put together by the OpenIntro authors based on materials on the Census Bureau's web site. We'll be doing two things in this lab:
 
@@ -241,7 +253,7 @@ For each new example (one symmetric and one right-skew), write a short paragraph
 If you find any that are left-skew, write those down too.
 
 
-### Code Block for Exloring Distributions
+### Code Block for Exploring Distributions
 
 Run the following command as many times as you wish. You just have to replace the word `VARIABLE` with the actual name of a variable.
 
@@ -253,10 +265,22 @@ df_stats( ~ VARIABLE, data = countyComplete, mean, median)
 gf_histogram( ~ VARIABLE, data = countyComplete)
 ```
 
-## To think about ...
-DANNY: I'm not sure what to do with this. I could assign a reflection question (something to post in a discussion board or include in their Lab Report). Or we could just leave it out of the Lab.
+```{r explore-check, eval = FALSE}
+# USER_CODE <- "df_stats( ~ popp2000, data = countyComplete, mean, median)
+# gf_histogram( ~ pop2010, data = countyComplete)"
+code <- for_checkr(USER_CODE)
+if (failed(code)) return(code)
+line1 <- quote(df_stats( ..v1.., data = countyComplete, mean, median))
+line2 <- quote(gf_histogram( ..v2.., data = countyComplete))
 
-For both skew and symmetrically shaped distributions, the median will be close to the large majority of values. Thus, the median is always a sensible description of a typical value. But for strongly skew distributions, the mean will be further than the median from the majority of values.
 
+check_blanks(code, list(line1, line2), 
+             insist(is_formula(v1), "Did you remove the ~ from the first argument to `df_stats()`?"),
+             insist(is_formula(v2), "Did you remove the ~ from the first argument to `df_stats()`?"),
+             insist(as.character(v1[[2]]) %in% names(countyComplete), "{{v1[[2]]}} needs to be a variable name from the `countyComplete` data frame. Check your spelling and punctuation."),
+             insist(as.character(v2[[2]]) %in% names(countyComplete), "{{v2[[2]]}} needs to be a variable name from the `countyComplete` data frame. Check your spelling."),
+             insist(same_name(v1[[2]], v2[[2]]), "You have two different variable names in the `gf_histogram()` and in the `df_stats()` lines: {{v1[[2]]}} and {{v2[[2]]}} respectively. Presumably you want to have two different views onto the *same* variable, not a histogram for {{v2[[2]]}} and the mean and median for {{v1[[2]]}}."),
+             passif(TRUE,'Check the graph and compare the mean and median to see whether the distribution is skew or symmetric.'))
+```
 
 
