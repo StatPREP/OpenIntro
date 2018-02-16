@@ -13,41 +13,65 @@ knitr::opts_chunk$set(echo = FALSE)
 library(dplyr)
 library(ggformula)
 library(openintro)
-library(data.table)
+library(rlang)
 library(maps)
 library(mapproj)
 data(countyComplete)
-Counties <- countyComplete
 tutorial_options(exercise.checker = checkr::check_for_learnr)
+
+countyMap <- function(var, 
+                 projection = c("sinusoidal", "stereographic",
+                 "azequalarea",
+                 "azequidistant", "sinusoidal")) {
+  projection <- match.arg(projection)
+  var <- rlang::enexpr(var)
+  varname <- rlang::expr_text(var)
+  
+  Shapes <- map_data('county') %>%
+    rename(state = "region", county = "subregion")
+  States <- map_data("state")
+
+  Counties <- countyComplete %>% 
+    mutate(var = !!var) %>%
+    select(state, name, var) %>% 
+    mutate(state = tolower(state), 
+           county = gsub("( parish| county)$", "", tolower(name)),
+           county = gsub("\\.", "", county))
+  Both <- Shapes %>%  left_join(Counties)
+
+  ggplot(Both, aes(x = long, y = lat, group = group, fill = var)) +
+    geom_polygon() +
+   scale_fill_continuous(guide = guide_legend(title = varname)) +
+    geom_polygon(data = States, aes(x = long, y = lat, group = group), fill = NA, color = "gray", size = 0.05) +
+    coord_map(projection = projection)
+}
 ```
 
+For the last two labs you've been looking at the county data without placing any of the counties on the map. 
 
-```{r}
-library(ggplot2)
-# this creates an example formatted as your obesity.map - you have this already...
-set.seed(1)    # for reproducible example
-map.county <- map_data('county')
-counties   <- unique(map.county[,5:6])
-obesity_map <- data.frame(state_names=counties$region, 
-                          county_names=counties$subregion, 
-                          obesity= runif(nrow(counties), min=0, max=100))
+The following chunk will generate a map of the counties. The color of the county shows the value of the variable. You can replace the `........` with any variable you like, e.g. `r paste(names(countyComplete)[-(1:3)], collapse = ", ")`
 
-# you start here...
-library(data.table)   # use data table merge - it's *much* faster
-map.county <- data.table(map_data('county'))
-setkey(map.county,region,subregion)
-obesity_map <- data.table(obesity_map)
-setkey(obesity_map,state_names,county_names)
-map.df      <- map.county[obesity_map]
 
-ggplot(map.df, aes(x=long, y=lat, group=group, fill=obesity)) + 
-  geom_polygon()+coord_map()
+```{r showmap, exercise = TRUE, warning = FALSE, message=FALSE, out.width="100%"}
+countyMap(.........)
+
 ```
 
+### Your tasks
 
+In performing these tasks, remember that you can put more than one `countyMay()` command in the command block, each on its own line. This will let you display multiple maps at the same time.
 
+The variable `black` gives the proportion of the population in each county that is African American.
 
+1. Make a map of the variable `black`.
+2. Make a map of the quantity `black * pop2010`
 
+Explain why the two maps show such different patterns.
+
+3. Make a map of the absolute population growth from 2000 to 2010: that is `pop2010 - pop2000`
+4. Make a map of the proportional population growth from 2000 to 2010, that is `(pop2010 - pop2000) / pop2000)`
+
+Say why the maps are so different.
 
 ```{r include = FALSE, eval = FALSE}
 library(checkr)
@@ -60,118 +84,6 @@ options(tutorial.event_recorder =
 unique_session <- substr(UUIDgenerate(), 1, 8)
 submittr::set_user(paste0("anonymous_", unique_session), "student", "Danny")
 ```
-
-## Comparing groups
-
-In [the previous lab](https://dtkaplan.shinyapps.io/nicole_lab_01/) you looked at the distribution across US counties of quantities such as population, commute time, and so on. In this lab you'll divide counties up into groups and compare the different groups. More specifically, you'll compare Minnesota counties to those in a few other states: California, Illinois, Iowa, and so on.
-
-To start, remind yourself what the `countyComplete` data frame looks like:
-
-```{r countyComplete1, exercise = TRUE}
-countyComplete
-```
-
-## Data wrangling
-
-"Data wrangling" is the process of modifying data frames so that they are in a format that makes the construction of graphics or the calculation of statistics very easy. It's important to remember that data wrangling is not about changing the values of variables (that's called "lying"!). Wrangling is about reformatting the authentic data values.
-
-Data wrangling is an entire subject in itself. We're going to cover only the very basics, which are straightforward. But you know that data wrangling is a crucial component of most uses of data, and there are many well-paying jobs in this field. So, if you read a job notice and see the word "database" or the name "SQL", you'll know that the job involves data wrangling. (SQL stands for "Structured Query Language". "Query" is one of the words used to describe parts of data wrangling.)
-
-In this lab, we'll be looking at just a few of the states in the `countyComplete` data. The wrangling you'll have to do involves constructing a subset of `countyComplete` that contains just the states we're interested in.  The next block contains the data-wrangling command to create a new data frame with just some states of interest.
-
-Here's a short explanation of what's going on. The first line creates a set of state names. (The `c()` stands for "collect together".) Each of those state names is enclosed in quotation marks. Note also that they are separated by commas: that's part of the way R works. The left pointing arrow `<-` means to give the collection a name: `states_of_interest`. That makes it easy to refer to the collection in the next command.
-
-The second through fourth lines create an object called `Our_states`. That's the `Our_states <-` part of the command. That's not a complete command, so R goes on to the next line. There, we are saying that the whole data frame (`countyComplete`) should be sent into (`%>%`) a command called `filter()`. As the name suggests, `filter()` allows you to choose which rows you want to keep. The `state %in% states_of_interest` part of the command is the specification of the rows that will be kept: those where the value of the `state` variable is one of the `states_of_interest`.
-
-Don't worry about mastering the details of such a command. But do make sure you understand enough that you would be comfortable adding another state to the `states_of_interest` and that the output of the wrangling procedure is a new data frame named `Our_states`.
-
-```{r wrangle1, exercise = TRUE}
-states_of_interest <- c("Minnesota", "California", "Iowa", "Illinois")
-Our_states <- 
-  countyComplete %>%
-  filter(state %in% states_of_interest)
-Our_states # this simply displays the data frame
-```
-
-Run the command and browse through the `Our_states` data frame to confirm that it is doing what's expected. Then modify the `states_of_interest`: for instance, take out California and put in Wyoming.
-
-## Comparing statistics state-by-state
-
-In the previous lab, you used the `df_stats()` function to compute the mean and median of a variable. You're going to use that command again, but slighly modified so that the different states are shown side-by-side.
-
-Try it on the fraction of the population (aged over 18) who are high-school graduates, `hs_grad`. 
-
-```{r stats_by_state, exercise = TRUE}
-states_of_interest <- c("Minnesota", "California", "Iowa", "Illinois")
-Our_states <- 
-  countyComplete %>%
-  filter(state %in% states_of_interest)
-df_stats(hs_grad ~ state, data = Our_states, mean, median)
-```
-
-Question: Remember that for symmetric distributions, the mean and median are about the same. For left-skew distributions, the mean is less than the median. Comparing the numbers in the table, which state has the most left-skew distribution of high-school graduates. Explain what this means by filling in the blanks in this sentence:
-~"The state of ----- has a few counties with a substantially  ----- fraction of high-school graduates than the large majority of counties in that state." (For the second blank, choose one of "lower" or "higher").
-
-## Displaying distributions state-by-state
-
-Let's return to graphical displays. In the previous lab, we used a histogram to show the distribution of a variable, like this:
-
-```{r hist_overall, exercise = TRUE}
-states_of_interest <- c("Minnesota", "California", "Iowa", "Illinois")
-Our_states <- 
-  countyComplete %>%
-  filter(state %in% states_of_interest)
-gf_histogram( ~ hs_grad, data = Our_states)
-```
-
-Now we want to reconfigure the plot so that separate histograms are drawn for each state.
-
-This is a good time to stop and think about the problem. What do you think the graphic should look like? Should we use color to distinguish the states from one another? If we did, would we want the differently colored bars overlap one another or be put side-by-side? Perhaps we should draw each state's histogram in it's own frame?
-
-There's no single correct answer to such questions. Pretty much all you can do is try out the different possibilities and decide for yourself which one is best. 
-
-Here are some different histogram commands for the different possibilities. You don't have to worry about understanding the details of the commands; your job is to focus on the graphs themselves. You can generate the graphs by replacing the `gf_histogram( ~ hs_grad, data = Our_states)` in the above block and then re-running the block. (You can cut-and-paste all three commands into the block, so that the different possibilities will show up in sequence.)
-
-* `gf_histogram( ~ hs_grad | state, data = Our_states)`
-* `gf_histogram( ~ hs_grad, fill = ~ state, data = Our_states)`
-* `gf_histogram( ~ hs_grad, fill = ~ state, data = Our_states, position = "dodge")`
-
-Decide which of these three possibilities you think is the most informative. And then think about what confusing about even this best display. After all, nobody said the histogram is the only way to graph a distribution.
-
-## Can we do better?
-
-Statisticians have developed alternatives to the histogram that many people think are easier to read. One of these is called the "box-and-whisker plot."
-
-```{r non_hist, exercise = TRUE}
-states_of_interest <- c("Minnesota", "California", "Iowa", "Illinois")
-Our_states <- 
-  countyComplete %>%
-  filter(state %in% states_of_interest)
-gf_boxplot( hs_grad ~ state, data = Our_states)
-```
-
-In each of the box-and-whisker icons, there is a box in the center with whiskers reaching out of the box. First, note that it is the *vertical* axis that stands for the fraction of high-school graduates. The box tells you the range of the middle 50% of the counties, from the 25% to the 75% quantile. The line in the middle shows the value of the median (also known as the 50% quantile.) The lower whisker shows the range of the bottom 25% of counters --- from the county with the lowest proportion of high-school graduates to the 25% quantile. The upper whisker shows the range from the 75% quantile to the county with the highest proportion of high-school graduates.
-
-Notice that for Illinois, Iowa, and Minnesota there are also some dots placed below the lower whisker. Each of these dots stands for a county. They are shown differently to highlight that they are far from the large majority of counties in those states. The word "outlier" is used to describe such counties.
-
-Statisticians have found that displaying such outliers with dots rather than the whisker helps to draw the reader's attention to these exceptional counties in a way that's not so distracting that you don't miss out on the message from the large majority of counties.
-
-Sometimes outliers are a sign that there's something wrong with the data, for instance a mistake recording a value. Other times an outlier is a perfectly authentic value, it's just that the distribution is sufficiently skew that some values are far away from the majority of values. 
-
-Questions:
-
-* In which state are the values for the different counties spread out the most?
-* Which state has the largest median value for the proportion of high-school graduates?
-* In which state is the single county with the largest proportion of high-school graduates?
-* How many counties in Minnesota are marked as being outliers? If those counties were magically moved to California, would they still be outliers?
-
-
-## Your task
-
-1. Find a variable for which there are outliers *above* the whiskers. 
-2. Find a variable for which there are outliers both *above* and *below* the whiskers.
-
-
 
 
 

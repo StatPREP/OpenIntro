@@ -1,0 +1,6 @@
+# library(checkr)
+library(ggformula)
+library(mosaic)
+library(mosaicCore)
+# library(submittr)
+library(openintro)
