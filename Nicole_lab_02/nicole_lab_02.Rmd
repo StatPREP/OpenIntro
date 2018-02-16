@@ -167,7 +167,6 @@ Answer the following questions.
 
 
 ## Your Task
-
 Find a variable for which there are outliers *above* the whiskers. Find a variable for which there are outliers both *above* and *below* the whiskers. In other words, in the code box below, replace `hs_grad` with a different variable.
 
 Feel free to change the the states included in `states_of_interest`. (Remember to use quotes around the name of the state and commas between the states in the list.)
