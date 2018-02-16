@@ -1,8 +1,8 @@
 ---
-title: "Comparing distributions"
+title: "Mapping the counties"
 output: learnr::tutorial
 tutorial:
-  id: "StatPREP/Nicole_lab_02"
+  id: "StatPREP/Nicole_lab_03"
   version: 0.1
 runtime: shiny_prerendered
 ---
@@ -13,10 +13,40 @@ knitr::opts_chunk$set(echo = FALSE)
 library(dplyr)
 library(ggformula)
 library(openintro)
+library(data.table)
+library(maps)
+library(mapproj)
 data(countyComplete)
 Counties <- countyComplete
 tutorial_options(exercise.checker = checkr::check_for_learnr)
 ```
+
+
+```{r}
+library(ggplot2)
+# this creates an example formatted as your obesity.map - you have this already...
+set.seed(1)    # for reproducible example
+map.county <- map_data('county')
+counties   <- unique(map.county[,5:6])
+obesity_map <- data.frame(state_names=counties$region, 
+                          county_names=counties$subregion, 
+                          obesity= runif(nrow(counties), min=0, max=100))
+
+# you start here...
+library(data.table)   # use data table merge - it's *much* faster
+map.county <- data.table(map_data('county'))
+setkey(map.county,region,subregion)
+obesity_map <- data.table(obesity_map)
+setkey(obesity_map,state_names,county_names)
+map.df      <- map.county[obesity_map]
+
+ggplot(map.df, aes(x=long, y=lat, group=group, fill=obesity)) + 
+  geom_polygon()+coord_map()
+```
+
+
+
+
 
 
 ```{r include = FALSE, eval = FALSE}

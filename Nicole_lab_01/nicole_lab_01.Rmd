@@ -240,9 +240,9 @@ Find examples of variables (other than the ones we've already seen) that have th
 
 For each new example (one symmetric and one right-skew), write a short paragraph in which you:
 
-1. Identify the variable by name and describe its meaning.
-2. Describe the shape of the distribution for that variable.
-3. Were you surprised by the shape or did it make sense to you? Write a sentence or two explaining your answer.
+a. Identify the variable by name and describe its meaning.
+b. Describe the shape of the distribution for that variable.
+c. Were you surprised by the shape or did it make sense to you? Write a sentence or two explaining your answer.
 
 If you find any that are left-skew, write those down too.
 
