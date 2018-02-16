@@ -45,7 +45,7 @@ countyComplete
 
 "Data wrangling" is the process of modifying data frames so that they are in a format that makes the construction of graphics or the calculation of statistics very easy. It's important to remember that data wrangling is not about changing the values of variables (that's called "lying"!). Wrangling is about reformatting the authentic data values.
 
-Data wrangling is an entire subject in itself. We're going to cover only the very basics, which are straightforward. But you know that data wrangling is a crucial component of most uses of data, and there are many well-paying jobs in this field. So, if you read a job notice and see the word "database" or the name "SQL", you'll know that the job involves data wrangling. (SQL stands for "Structured Query Language". "Query" is one of the words used to describe parts of data wrangling.)
+Data wrangling is an entire subject in itself. We're going to cover only the very basics, which are straightforward. But you should know that data wrangling is a crucial component of most uses of data, and there are many well-paying jobs in this field. So, if you read a job notice and see the word "database" or the name "SQL", you'll know that the job involves data wrangling. (SQL stands for "Structured Query Language". "Query" is one of the words used to describe parts of data wrangling.)
 
 In this lab, we'll be looking at just a few of the states in the `countyComplete` data. The wrangling you'll have to do involves constructing a subset of `countyComplete` that contains just the states we're interested in.  The next block contains the data-wrangling command to create a new data frame with just some states of interest.
 
@@ -79,8 +79,15 @@ Our_states <-
 df_stats(hs_grad ~ state, data = Our_states, mean, median)
 ```
 
-Question: Remember that for symmetric distributions, the mean and median are about the same. For left-skew distributions, the mean is less than the median. Comparing the numbers in the table, which state has the most left-skew distribution of high-school graduates. Explain what this means by filling in the blanks in this sentence:
-~"The state of ----- has a few counties with a substantially  ----- fraction of high-school graduates than the large majority of counties in that state." (For the second blank, choose one of "lower" or "higher").
+### For your Lab 2 Report (part 1)
+
+Remember that for symmetric distributions, the mean and median are about the same. For left-skew distributions, the mean is less than the median. Comparing the numbers in the table, which state has the most left-skew distribution of high-school graduates? 
+
+Explain what this means by filling in the blanks in this sentence:
+
+> The state of ----- has a few counties with a substantially  ----- fraction of high-school graduates than the large majority of counties in that state. [For the second blank, choose one of "lower" or "higher"].
+
+In your Lab 2 Report, write above sentence with the blanks filled in. Then write a sentence describing why you answered the way you did based on the numbers in the table.
 
 ## Displaying distributions state-by-state
 
@@ -102,15 +109,24 @@ There's no single correct answer to such questions. Pretty much all you can do i
 
 Here are some different histogram commands for the different possibilities. You don't have to worry about understanding the details of the commands; your job is to focus on the graphs themselves. You can generate the graphs by replacing the `gf_histogram( ~ hs_grad, data = Our_states)` in the above block and then re-running the block. (You can cut-and-paste all three commands into the block, so that the different possibilities will show up in sequence.)
 
-* `gf_histogram( ~ hs_grad | state, data = Our_states)`
-* `gf_histogram( ~ hs_grad, fill = ~ state, data = Our_states)`
-* `gf_histogram( ~ hs_grad, fill = ~ state, data = Our_states, position = "dodge")`
+1. `gf_histogram( ~ hs_grad | state, data = Our_states)`
+2. `gf_histogram( ~ hs_grad, fill = ~ state, data = Our_states)`
+3. `gf_histogram( ~ hs_grad, fill = ~ state, data = Our_states, position = "dodge")`
 
-Decide which of these three possibilities you think is the most informative. And then think about what confusing about even this best display. After all, nobody said the histogram is the only way to graph a distribution.
+
+
+### For your Lab 2 Report (part 2)
+
+Write a short paragraph in which you:
+
+ * Decide which of these three possibilities you think is the most informative. (You can refer to them as Option 1, Option 2, and Option 3.) Explain why you chose the option you did.
+ * Describe what is confusing about even this best display. (After all, nobody said the histogram is the only way to graph a distribution.)
+
+
 
 ## Can we do better?
 
-Statisticians have developed alternatives to the histogram that many people think are easier to read. One of these is called the "box-and-whisker plot."
+Statisticians have developed alternatives to the histogram that many people think are easier to read. One of these is called the "box-and-whisker plot" or simply a "box plot."
 
 ```{r non_hist, exercise = TRUE}
 states_of_interest <- c("Minnesota", "California", "Iowa", "Illinois")
@@ -120,7 +136,18 @@ Our_states <-
 gf_boxplot( hs_grad ~ state, data = Our_states)
 ```
 
-In each of the box-and-whisker icons, there is a box in the center with whiskers reaching out of the box. First, note that it is the *vertical* axis that stands for the fraction of high-school graduates. The box tells you the range of the middle 50% of the counties, from the 25% to the 75% quantile. The line in the middle shows the value of the median (also known as the 50% quantile.) The lower whisker shows the range of the bottom 25% of counters --- from the county with the lowest proportion of high-school graduates to the 25% quantile. The upper whisker shows the range from the 75% quantile to the county with the highest proportion of high-school graduates.
+
+**Vocabulary Detour**
+
+Recall that a percentile refers to a position within an ordered list of the data values. For example, the median is at the half-way point in the list of data. The data values at certain *positions* are the percentiles. For example, the 10th percentile is the data value at which 10% of the data values are at or "below" (less than) that value. 
+
+The 25th percentile is also known as the first quartile, denoted $Q_1$. (Twenty-five percent of the total number of data values are less than or equal to the data value we call $Q_1$.) The 75th percentile is known as the third quartile, denoted $Q_3$. (Seventy-five percent of the total number of data values are less than or equal to the data value we call $Q_3$.) The 50th percentile is the middle of the data, usually called the median (sometimes denoted $Q_2$).
+
+**Back to the Plots**
+
+In each of the box-and-whisker graphics, there is a box in the center with whiskers reaching out of the box. First, note that it is the *vertical* axis that stands for the fraction of high-school graduates. The box tells you the range of the middle 50% of the counties, from the 25th to the 75th percentile. The line in the middle of the box shows you the 50th percentile (median).
+
+The lower whisker shows the range of the bottom 25% of counties --- from the county with the lowest proportion of high-school graduates to the 25th percentile. The upper whisker shows the range from the 75th percentile to the county with the highest proportion of high-school graduates.
 
 Notice that for Illinois, Iowa, and Minnesota there are also some dots placed below the lower whisker. Each of these dots stands for a county. They are shown differently to highlight that they are far from the large majority of counties in those states. The word "outlier" is used to describe such counties.
 
@@ -128,18 +155,47 @@ Statisticians have found that displaying such outliers with dots rather than the
 
 Sometimes outliers are a sign that there's something wrong with the data, for instance a mistake recording a value. Other times an outlier is a perfectly authentic value, it's just that the distribution is sufficiently skew that some values are far away from the majority of values. 
 
-Questions:
+### For your Lab 2 Report (part 3)
 
-* In which state are the values for the different counties spread out the most?
-* Which state has the largest median value for the proportion of high-school graduates?
-* In which state is the single county with the largest proportion of high-school graduates?
-* How many counties in Minnesota are marked as being outliers? If those counties were magically moved to California, would they still be outliers?
+Answer the following questions.
+
+ 1. In which state are the values for the different counties spread out the most? How do you know?
+ 2. Which state has the largest median value for the proportion of high-school graduates?
+ 3. In which state is the single county with the largest proportion of high-school graduates? How do you know?
+ 4. How many counties in Minnesota are marked as being outliers? If those counties were magically moved to California, would they still be outliers? Why or why not?
 
 
-## Your task
+## Your Task
+Find a variable for which there are outliers *above* the whiskers. Find a variable for which there are outliers both *above* and *below* the whiskers. In other words, in the code box below, replace `hs_grad` with a different variable.
 
-1. Find a variable for which there are outliers *above* the whiskers. 
-2. Find a variable for which there are outliers both *above* and *below* the whiskers.
+Feel free to change the the states included in `states_of_interest`. (Remember to use quotes around the name of the state and commas between the states in the list.)
+
+```{r box_explore, exercise = TRUE}
+states_of_interest <- c("Minnesota", "California", "Iowa", "Illinois")
+Our_states <- 
+  countyComplete %>%
+  filter(state %in% states_of_interest)
+gf_boxplot( hs_grad ~ state, data = Our_states)
+```
+
+To refresh your memories, here is a list of the variables:
+```{r}
+names(countyComplete)
+```
+
+### For your Lab 2 Report (part 4)
+
+Describe your results from the task above. Use complete sentences. You should have at least 1 paragraph, but no more than 3 paragraphs.
+
+Your description should address the following questions.
+
+ * Which variables did you find with outliers above the whiskers?
+ * Which variables had outliers both above and below the whiskers?
+ * Did you change the list of states? If so, what states did you use?
+ * Did all of your states have the outliers or just one or two of them?
+ * Did any of your results surprise you? If yes, what was it and why were you surprised? If no, why not?
+ * Was it easy or difficult to find variables that had the desired outliers? Why?
+
 
 
 
